@@ -101,6 +101,20 @@ class HttpRequest {
 
     return list;
   }
+
+  static Future<dynamic> getTopListdDetail(int topId) async {
+    var response = await dio.post(API.BASE_URL,
+        data: Body.toplistDetail(topId),
+        options: Options(responseType: ResponseType.plain));
+    return jsonDecode(response.data.toString());
+  }
+
+  static Future<dynamic> getSingerList(int area) async {
+    var response = await dio.post(API.BASE_URL,
+        data: Body.singerList(area),
+        options: Options(responseType: ResponseType.plain));
+    return json.decode(response.data.toString());
+  }
 }
 
 class API {
@@ -174,4 +188,27 @@ class Body {
       }
     }
   };
+
+  static toplistDetail(int topId) => {
+        "detail": {
+          "module": "musicToplist.ToplistInfoServer",
+          "method": "GetDetail",
+          "param": {"topId": topId, "offset": 0, "num": 100}
+        }
+      };
+
+  static singerList(int area) => {
+        "singerList": {
+          "module": "Music.SingerListServer",
+          "method": "get_singer_list",
+          "param": {
+            "area": area,
+            "sex": -100,
+            "genre": -100,
+            "index": -100,
+            "sin": 0,
+            "cur_page": 1
+          }
+        }
+      };
 }

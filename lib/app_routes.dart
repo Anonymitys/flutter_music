@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_music/body/singer_list_body.dart';
 import 'package:flutter_music/main.dart';
 import 'package:flutter_music/unknow_page.dart';
 
@@ -10,6 +11,7 @@ class AppRoutes {
             builder: (_) => MyHomePage(
                   title: '音乐馆',
                 )),
+        Routes.SINGER_LIST: (_) => SingerListBody(),
       };
 
   MaterialPageRoute onUnknowPage(RouteSettings settings) =>
@@ -18,4 +20,5 @@ class AppRoutes {
 
 class Routes {
   static const String HOME_PAGE = '/';
+  static const String SINGER_LIST = '/singer_list';
 }

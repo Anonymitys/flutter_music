@@ -5,10 +5,13 @@ import 'package:flutter_music/bean/group_top_list.dart';
 import 'package:flutter_music/bean/home.dart';
 import 'package:flutter_music/bean/mv_detail.dart';
 import 'package:flutter_music/body/recomend.dart';
+import 'package:flutter_music/body/top_list_detail.dart';
+import 'package:flutter_music/body/toplist.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/util.dart';
-import 'package:sprintf/sprintf.dart';
 import 'package:flutter_music/base_widget.dart';
+
+import '../app_routes.dart';
 
 class MusicMuseum extends StatefulWidget {
   @override
@@ -23,7 +26,6 @@ class _MusicMuseumState extends State<MusicMuseum> {
   @override
   void initState() {
     super.initState();
-    //HttpRequest.getMusicHome();
     _futureBuilderFuture = HttpRequest.getMusicHome();
   }
 
@@ -50,7 +52,6 @@ class _MusicMuseumState extends State<MusicMuseum> {
                     return Text('Error: ${snapshot.error}');
                   _musicHome = MusicHome.fromJson(snapshot.data[0]);
                   _mv = MV.fromJson(snapshot.data[1]);
-                  print(_mv.data.mvlist[0].mvdesc);
                   return _getMusicHomeBody(context);
                 default:
                   return null;
@@ -70,7 +71,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
           slivers: <Widget>[
             _banner(),
             _content(),
-            title('官方歌单', '更多',10, () {
+            title('官方歌单', '更多', 10, () {
               print('hello world');
             }),
             SliverToBoxAdapter(
@@ -92,7 +93,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
                         })),
               ),
             ),
-            title('推荐歌单', '更多',10, () {
+            title('推荐歌单', '更多', 10, () {
               print('hello world');
             }),
             SliverToBoxAdapter(
@@ -114,7 +115,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
                         })),
               ),
             ),
-            title('新歌速递', '更多',10, () {
+            title('新歌速递', '更多', 10, () {
               print('hello world');
             }),
             SliverToBoxAdapter(
@@ -129,7 +130,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
                 )),
               ),
             ),
-            title('最新专辑', '更多',10, () {
+            title('最新专辑', '更多', 10, () {
               print('hello world');
             }),
             SliverToBoxAdapter(
@@ -145,7 +146,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
                 ),
               ),
             ),
-            title('精选视频', '更多',10, () {
+            title('精选视频', '更多', 10, () {
               print('hello world');
             }),
             SliverToBoxAdapter(
@@ -163,8 +164,11 @@ class _MusicMuseumState extends State<MusicMuseum> {
                 ),
               ),
             ),
-            title('热歌风向标', '更多', 10,() {
-              print('hello world');
+            title('热歌风向标', '更多', 10, () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => TopListBody(
+                        groupTop: _musicHome.groupTopList.data.groupTop,
+                      )));
             }),
             SliverToBoxAdapter(
               child: Container(
@@ -172,7 +176,8 @@ class _MusicMuseumState extends State<MusicMuseum> {
                 child: PageView.custom(
                   childrenDelegate: SliverChildBuilderDelegate(
                     (context, index) => _topListItem(index, (topId) {
-                      print(topId);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => TopListDetailPage(topId)));
                     }),
                     childCount: 4,
                   ),
@@ -253,34 +258,48 @@ class _MusicMuseumState extends State<MusicMuseum> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            _contentItem('images/singer.png', '歌手'),
-            _contentItem('images/rank.png', '排行'),
-            _contentItem('images/sort_play_list.png', '分类歌单'),
+            _contentItem('images/singer.png', '歌手', () {
+              Navigator.of(context).pushNamed(Routes.SINGER_LIST);
+            }),
+            _contentItem('images/rank.png', '排行', () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => TopListBody(
+                    groupTop: _musicHome.groupTopList.data.groupTop,
+                  ),
+                ),
+              );
+            }),
+            _contentItem('images/sort_play_list.png', '分类歌单', () {}),
           ],
         ),
       );
 
-  _contentItem(String imagePath, String title) => Container(
-        margin: EdgeInsets.only(top: 15, bottom: 15),
-        width: 80,
-        height: 50,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              imagePath,
-              width: 20,
-              height: 20,
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 5),
-            ),
-            Text(title),
-          ],
+  _contentItem(String imagePath, String title, VoidCallback callback) =>
+      GestureDetector(
+        onTap: () {
+          callback();
+        },
+        child: Container(
+          margin: EdgeInsets.only(top: 15, bottom: 15),
+          width: 80,
+          height: 50,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                imagePath,
+                width: 20,
+                height: 20,
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 5),
+              ),
+              Text(title),
+            ],
+          ),
         ),
       );
-
-
 
   Widget _gridAlbumItem(int index, void Function(String albumMid) callback) {
     String singerStr = '';
@@ -299,7 +318,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
             ClipRRect(
               borderRadius: BorderRadius.circular(5),
               child: Image.network(
-                _getSongPic(_musicHome.newAlbumList.data.albums[index].mid),
+                getSongPic(_musicHome.newAlbumList.data.albums[index].mid),
                 width: 115,
                 height: 115,
                 fit: BoxFit.cover,
@@ -417,7 +436,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(5),
             child: Image.network(
-              _getSongPic(_musicHome
+              getSongPic(_musicHome
                   .newSongList.data.songlist[i + 5 * index].album.pMid),
               width: 55,
               height: 55,
@@ -425,8 +444,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
           ),
           title: Text(_musicHome.newSongList.data.songlist[i + 5 * index].name),
           subtitle: Text(
-            _subtitleFormat(
-                _musicHome.newSongList.data.songlist[i + 5 * index]),
+            subtitleFormat(_musicHome.newSongList.data.songlist[i + 5 * index]),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -486,7 +504,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
           ClipRRect(
             borderRadius: BorderRadius.circular(5),
             child: Image.network(
-              _getSongPic(song.albumMid),
+              getSongPic(song.albumMid),
               width: 60,
               height: 60,
             ),
@@ -579,18 +597,5 @@ class _MusicMuseumState extends State<MusicMuseum> {
         ),
       ),
     );
-  }
-
-
-
-  _getSongPic(String songMid) =>
-      'https://y.gtimg.cn/music/photo_new/T002R300x300M000$songMid.jpg?max_age=2592000';
-
-  _subtitleFormat(SongInfo songInfo) {
-    String str = '';
-    songInfo.singer.forEach((singer) {
-      str = '$str${singer.singerName}/';
-    });
-    return '${str.substring(0, str.length - 1)}·${songInfo.album.name}';
   }
 }
