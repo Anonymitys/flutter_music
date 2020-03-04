@@ -115,6 +115,33 @@ class HttpRequest {
         options: Options(responseType: ResponseType.plain));
     return json.decode(response.data.toString());
   }
+
+  static Future<dynamic> getSingerSong(String singerMid) async {
+    var response = await dio.post(API.BASE_URL,
+        data: Body.singerSong(singerMid),
+        options: Options(responseType: ResponseType.plain));
+    print(response.data.toString());
+    return json.decode(response.data.toString());
+  }
+
+  static Future<dynamic> getSingerAlbum(String singerMid) async {
+    var response = await dio.post(
+        API.BASE_URL, data: Body.singerAlbum(singerMid),
+        options: Options(responseType: ResponseType.plain));
+    return json.decode(response.data.toString());
+  }
+
+  static Future<dynamic> getSingerMv(String singerMid) async{
+    var response = await dio.get(API.MV_URL, queryParameters: {
+      "inCharset": "utf8",
+      "outCharset": "utf8",
+      "cid": 205360581,
+      "singermid": singerMid,
+      "begin":0,
+      "num":100
+    });
+    return json.decode(response.data.toString());
+  }
 }
 
 class API {
@@ -122,6 +149,8 @@ class API {
   static const PLAY_LIST_URL =
       'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg';
   static const MV_URL = 'https://c.y.qq.com/mv/fcgi-bin/getmv_by_tag';
+
+  static const MV_SINGER = "https://c.y.qq.com/mv/fcgi-bin/fcg_singer_mv.fcg";
 }
 
 class Body {
@@ -189,7 +218,8 @@ class Body {
     }
   };
 
-  static toplistDetail(int topId) => {
+  static toplistDetail(int topId) =>
+      {
         "detail": {
           "module": "musicToplist.ToplistInfoServer",
           "method": "GetDetail",
@@ -197,7 +227,8 @@ class Body {
         }
       };
 
-  static singerList(int area) => {
+  static singerList(int area) =>
+      {
         "singerList": {
           "module": "Music.SingerListServer",
           "method": "get_singer_list",
@@ -209,6 +240,30 @@ class Body {
             "sin": 0,
             "cur_page": 1
           }
+        }
+      };
+
+  static singerSong(String singerMid) =>
+      {
+        "singerSongList": {
+          "method": "GetSingerSongList",
+          "param": {"order": 1, "singerMid": singerMid, "begin": 0, "num": 100},
+          "module": "musichall.song_list_server"
+        }
+      };
+
+  static singerAlbum(String singerMid) =>
+      {
+
+        "getAlbumList": {
+          "method": "GetAlbumList",
+          "param": {
+            "singerMid": singerMid,
+            "order": 0,
+            "begin": 0,
+            "num": 100
+          },
+          "module": "music.musichallAlbum.AlbumListServer"
         }
       };
 }

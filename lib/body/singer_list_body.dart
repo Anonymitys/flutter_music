@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music/bean/singer_list.dart';
+import 'package:flutter_music/body/singer_detail_body.dart';
 
 import '../network/network_util.dart';
 import '../network/network_util.dart';
@@ -81,7 +82,7 @@ class _SingerListState extends State<SingerListBody> {
   _getMainWidget(context) {
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
-        contentPadding: EdgeInsets.only(top: 15,left:10),
+        contentPadding: EdgeInsets.only(top: 15, left: 10),
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(5),
           child: Image.network(
@@ -89,8 +90,13 @@ class _SingerListState extends State<SingerListBody> {
         ),
         title:
             Text(_singerContent.singerList.data.singerlist[index].singerName),
-        onTap: (){
-          print(_singerContent.singerList.data.singerlist[index].singerMid);
+        onTap: () {
+          var singerMid =
+              _singerContent.singerList.data.singerlist[index].singerMid;
+          var singerName =
+              _singerContent.singerList.data.singerlist[index].singerName;
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => SingerDetailBody(singerMid, singerName)));
         },
       ),
       itemCount: _singerContent.singerList.data.singerlist.length,

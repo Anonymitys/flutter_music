@@ -27,7 +27,9 @@ class _MusicVideoState extends State<MusicVideo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('视频'),
+        elevation: 0,
       ),
       body: FutureBuilder(
         builder: (context, snapshot) {
@@ -74,7 +76,7 @@ class _MusicVideoState extends State<MusicVideo> {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 10,
-                childAspectRatio: 5 / 4),
+                childAspectRatio: 9/8),
           ),
           _mvRankBanner(() {
             print("hello world");

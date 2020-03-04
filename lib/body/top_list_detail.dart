@@ -3,9 +3,6 @@ import 'package:flutter_music/bean/toplist_detail.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 import '../network/network_util.dart';
-import '../network/network_util.dart';
-import '../utils/util.dart';
-import '../utils/util.dart';
 import '../utils/util.dart';
 
 class TopListDetailPage extends StatefulWidget {
@@ -68,9 +65,11 @@ class _TopListDetailstate extends State<TopListDetailPage> {
           flexibleSpace: LayoutBuilder(
             builder: (context, constraints) {
               top = constraints.biggest.height;
+              print(top);
               return FlexibleSpaceBar(
+                centerTitle: true,
                 title: Opacity(
-                  opacity: top == 100.0 ? 1.0 : 0.0,
+                  opacity: top <= 100.0 ? 1.0 : 0.0,
                   child: Text(
                     _topListDetail.detail.data.dataSub.titleDetail,
                     style: TextStyle(color: Colors.white),
