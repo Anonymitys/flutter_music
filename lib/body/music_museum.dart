@@ -4,6 +4,7 @@ import 'package:flutter_music/bean/album_entity.dart';
 import 'package:flutter_music/bean/group_top_list.dart';
 import 'package:flutter_music/bean/home.dart';
 import 'package:flutter_music/bean/mv_detail.dart';
+import 'package:flutter_music/body/album_detail.dart';
 import 'package:flutter_music/body/recomend.dart';
 import 'package:flutter_music/body/top_list_detail.dart';
 import 'package:flutter_music/body/toplist.dart';
@@ -140,7 +141,9 @@ class _MusicMuseumState extends State<MusicMuseum> {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) =>
                       _gridAlbumItem(index, (albumMid) {
-                    print(albumMid);
+                    // print(albumMid);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => AlbumDetailBody(albumMid)));
                   }),
                   itemCount: 9,
                 ),

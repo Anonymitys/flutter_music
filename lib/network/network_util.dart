@@ -166,6 +166,14 @@ class HttpRequest {
 
     return list;
   }
+
+  static Future<dynamic> getAlbumDetail(String albumMid) async {
+    var response = await dio.post(API.BASE_URL,
+        data: Body.albumDetail(albumMid),
+        options: Options(responseType: ResponseType.plain));
+
+    return json.decode(response.data.toString());
+  }
 }
 
 class API {
@@ -278,6 +286,20 @@ class Body {
           "method": "GetAlbumList",
           "param": {"singerMid": singerMid, "order": 0, "begin": 0, "num": 100},
           "module": "music.musichallAlbum.AlbumListServer"
+        }
+      };
+
+  static albumDetail(String albumMid) => {
+        "albumSonglist": {
+          "method": "GetAlbumSongList",
+          "param": {
+            "albumMid": albumMid,
+            "albumID": 0,
+            "begin": 0,
+            "num": 100,
+            "order": 2
+          },
+          "module": "music.musichallAlbum.AlbumSongList"
         }
       };
 }

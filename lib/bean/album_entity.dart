@@ -162,3 +162,40 @@ class SongInfo {
     return data;
   }
 }
+
+
+class AlbumDetail {
+  AlbumSonglist albumSonglist;
+
+  AlbumDetail({this.albumSonglist});
+
+  AlbumDetail.fromJson(Map<String, dynamic> json) {
+    albumSonglist = json['albumSonglist'] != null ? new AlbumSonglist.fromJson(json['albumSonglist']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.albumSonglist != null) {
+      data['albumSonglist'] = this.albumSonglist.toJson();
+    }
+    return data;
+  }
+}
+
+class AlbumSonglist {
+  AlbumInfo albumInfo;
+
+  AlbumSonglist({this.albumInfo});
+
+  AlbumSonglist.fromJson(Map<String, dynamic> json) {
+    albumInfo = json['data'] != null ? new AlbumInfo.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.albumInfo != null) {
+      data['data'] = this.albumInfo.toJson();
+    }
+    return data;
+  }
+}

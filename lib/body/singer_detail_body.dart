@@ -5,6 +5,7 @@ import 'package:flutter_music/bean/singer_album.dart';
 import 'package:flutter_music/bean/singer_list.dart';
 import 'package:flutter_music/bean/singer_mv.dart';
 import 'package:flutter_music/bean/singer_song.dart';
+import 'package:flutter_music/body/album_detail.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/util.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -38,12 +39,12 @@ class _SingerDetailState extends State<SingerDetailBody> {
   ];
 
   _onScroll(offset) {
-    var opacity = offset / 220.0;
+    var opacity = offset / 200.0;
 
     if (opacity > 1) opacity = 1.0;
     if (opacity < 0) opacity = 0.0;
     setState(() {
-      hideTab = offset > 220 ? false : true;
+      hideTab = offset > 200 ? false : true;
       showTitle = opacity;
     });
   }
@@ -281,7 +282,10 @@ class _SingerDetailState extends State<SingerDetailBody> {
             overflow: TextOverflow.ellipsis,
           ),
           onTap: () {
-            print(_singerAlbum.getAlbumList.data.albumList[index].albumMid);
+            // print(_singerAlbum.getAlbumList.data.albumList[index].albumMid);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => AlbumDetailBody(
+                    _singerAlbum.getAlbumList.data.albumList[index].albumMid)));
           },
         ),
       ),

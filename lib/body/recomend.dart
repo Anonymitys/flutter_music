@@ -6,6 +6,81 @@ import 'package:flutter_music/bean/tag_entity.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:palette_generator/palette_generator.dart';
 
+Cdlist _cdlist;
+Color pickColor;
+bool isOfficialList = false;
+bool isAlbum = false;
+double height, screenWidth;
+double top;
+
+_requestAPI(int disstid) =>
+    Future(() => HttpRequest.getPlaylistDetail(disstid)).then((value) {
+      _cdlist = PlayList.fromJson(value).cdlist[0];
+      if (_cdlist.nickname == 'QQ音乐官方歌单') {
+        isOfficialList = true;
+      } else {
+        isOfficialList = false;
+      }
+      return PaletteGenerator.fromImageProvider(NetworkImage(_cdlist.logo));
+    }).then((paletteGenerator) {
+      if (paletteGenerator != null && paletteGenerator.colors.isNotEmpty) {
+        pickColor = paletteGenerator.colors.toList()[0].withOpacity(1);
+      }
+    });
+
+_subtitleFormat(Songlist songlist) {
+  String str = '';
+  songlist.singer.forEach((singer) {
+    str = '$str${singer.singerName}/';
+  });
+  return '${str.substring(0, str.length - 1)}·${songlist.albumname}';
+}
+
+_playlist(int index) {
+  return GestureDetector(
+    behavior: HitTestBehavior.opaque,
+    onTap: (){
+      print(_cdlist.songlist[index].songmid);
+    },
+    child: Container(
+      margin: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+      child: Row(
+        children: <Widget>[
+          Text('${index + 1}'),
+          Padding(padding: EdgeInsets.only(left: 20)),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  _cdlist.songlist[index].songname,
+                  style: TextStyle(fontSize: 16),
+                ),
+                Padding(padding: EdgeInsets.only(top: 3)),
+                Text(
+                  _subtitleFormat(_cdlist.songlist[index]),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Colors.grey, fontSize: 13),
+                ),
+              ],
+            ),
+          ),
+          Offstage(
+            offstage: _cdlist.songlist[index].vid.isEmpty,
+            child: IconButton(
+                icon: Icon(Icons.video_library),
+                onPressed: () {
+                  print(_cdlist.songlist[index].vid);
+                }),
+          )
+        ],
+      ),
+    ),
+  );
+}
+
 class HomePage extends StatefulWidget {
   final int disstid;
 
@@ -17,16 +92,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var _futureBuilderFuture;
-  Cdlist _cdlist;
   var _title = '歌单';
-  Color pickColor;
   double opacity = 0;
   bool showPlayAll = false;
 
   @override
   void initState() {
     super.initState();
-    _futureBuilderFuture = _requestAPI();
+    _futureBuilderFuture = _requestAPI(widget.disstid);
   }
 
   _onScroll(offset) {
@@ -43,6 +116,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
+    top = MediaQuery.of(context).padding.top;
     return Scaffold(
       body: FutureBuilder(
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -61,14 +136,16 @@ class _HomePageState extends State<HomePage> {
               case ConnectionState.done:
                 print('done');
                 if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-                return _getMainWidget(context);
+                return isOfficialList
+                    ? OfficialPlayListWidget()
+                    : _getMainWidget(context);
               default:
                 return null;
             }
           },
           future: _futureBuilderFuture),
     );
-    // );
+
   }
 
   Widget _getMainWidget(BuildContext context) {
@@ -97,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                 ],
                 body: ListView.builder(
                   physics: ClampingScrollPhysics(),
-                  itemBuilder: (_, index) => _listItem(index),
+                  itemBuilder: (_, index) => _playlist(index),
                   itemCount: _cdlist.songlist.length,
                 ),
               ),
@@ -106,7 +183,7 @@ class _HomePageState extends State<HomePage> {
           Column(
             children: <Widget>[
               Container(
-                height: 85,
+                height: 56+top,
                 child: Stack(
                   children: <Widget>[
                     Opacity(
@@ -117,13 +194,13 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Container(
                       color: Colors.transparent,
-                      padding: EdgeInsets.only(left: 10, top: 34),
+                      padding: EdgeInsets.only(left: 10, top: top),
                       child: Row(
                         children: <Widget>[
                           IconButton(
                               icon: Icon(
                                 Icons.keyboard_arrow_left,
-                                size: 25,
+                                size: 30,
                                 color: Colors.white,
                               ),
                               onPressed: () {
@@ -168,7 +245,7 @@ class _HomePageState extends State<HomePage> {
           Container(
             color: pickColor,
             padding: EdgeInsets.only(top: 50),
-            height: 285,
+            height: 300,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -256,32 +333,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _listItem(int index) => ListTile(
-        leading: Text('${index + 1}'),
-        title: Text(
-          _cdlist.songlist[index].songname,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(
-          _subtitleFormat(_cdlist.songlist[index]),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        trailing: Offstage(
-          offstage: _cdlist.songlist[index].vid.isEmpty,
-          child: IconButton(icon: Icon(Icons.video_library), onPressed: () {}),
-        ),
-      );
-
-  _subtitleFormat(Songlist songlist) {
-    String str = '';
-    songlist.singer.forEach((singer) {
-      str = '$str${singer.singerName}/';
-    });
-    return '${str.substring(0, str.length - 1)}·${songlist.albumname}';
-  }
-
   _listTag(List<Tags> tags) {
     List<Widget> widgets = List<Widget>();
 
@@ -308,14 +359,182 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       );
+}
 
-  _requestAPI() =>
-      Future(() => HttpRequest.getPlaylistDetail(widget.disstid)).then((value) {
-        _cdlist = PlayList.fromJson(value).cdlist[0];
-        return PaletteGenerator.fromImageProvider(NetworkImage(_cdlist.logo));
-      }).then((paletteGenerator) {
-        if (paletteGenerator != null && paletteGenerator.colors.isNotEmpty) {
-          pickColor = paletteGenerator.colors.toList()[0].withOpacity(1);
-        }
-      });
+class OfficialPlayListWidget extends StatefulWidget {
+  @override
+  State createState() => _OfficiallistStates();
+}
+
+class _OfficiallistStates extends State<OfficialPlayListWidget> {
+  double opacity = 0.0;
+  bool showPlayAll = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  _onScroll(offset) {
+    showPlayAll = offset > 265 ? true : false;
+    double alpha = offset / 200;
+    print(offset);
+    if (alpha > 1) alpha = 1;
+    if (alpha < 0) alpha = 0;
+    setState(() {
+      opacity = alpha;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MediaQuery.removePadding(
+        removeTop: true,
+        context: context,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (notification) {
+                  if (notification is ScrollUpdateNotification &&
+                      notification.depth == 0) {
+                    _onScroll(notification.metrics.pixels);
+                  }
+                  return true;
+                },
+                child: NestedScrollView(
+                  headerSliverBuilder: (context, index) => <Widget>[
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 300,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                alignment: Alignment.topCenter,
+                                fit: BoxFit.fitWidth,
+                                image: NetworkImage(_cdlist.logo),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: screenWidth - 20,
+                            margin: EdgeInsets.only(left: 10, right: 10),
+                            padding: EdgeInsets.only(
+                                left: 15, right: 15, top: 10, bottom: 10),
+                            transform: Matrix4.translationValues(0, -10, 10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    blurRadius: 5,
+                                    spreadRadius: 1,
+                                  ),
+                                ]),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Image.network(
+                                      _cdlist.headurl,
+                                      width: 20,
+                                      height: 20,
+                                    ),
+                                    Text(_cdlist.nickname),
+                                  ],
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: Text(
+                                    _cdlist.desc,
+                                    style: TextStyle(color: Colors.black54),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: _playAll(context),
+                    ),
+                  ],
+                  body: ListView.builder(
+                    physics: ClampingScrollPhysics(),
+                    itemBuilder: (_, index) => _playlist(index),
+                    itemCount: _cdlist.songlist.length,
+                  ),
+                ),
+              ),
+            ),
+            Column(
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    Opacity(
+                      opacity: opacity,
+                      child: Container(
+                          height: 56 + top,
+                          padding: EdgeInsets.only(top: top),
+                          color: pickColor,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                    _cdlist.dissname,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
+                    ),
+                    Container(
+                      height: 56 + top,
+                      padding: EdgeInsets.only(top: top),
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.keyboard_arrow_left,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ));
+  }
+
+  Widget _playAll(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(left: 10),
+      height: 45,
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.play_arrow),
+          Padding(padding: EdgeInsets.only(right: 10)),
+          Text(
+            '播放全部',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          Text('(共${_cdlist.totalSongNum}首)'),
+        ],
+      ),
+    );
+  }
 }
