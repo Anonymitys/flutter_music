@@ -190,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                     children: <Widget>[
                       Text(
                         _cdlist.dissname,
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: Colors.white),
                       ),
@@ -309,7 +309,7 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  _requestAPI() async =>
+  _requestAPI() =>
       Future(() => HttpRequest.getPlaylistDetail(widget.disstid)).then((value) {
         _cdlist = PlayList.fromJson(value).cdlist[0];
         return PaletteGenerator.fromImageProvider(NetworkImage(_cdlist.logo));

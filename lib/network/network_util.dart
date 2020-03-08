@@ -11,7 +11,7 @@ class HttpRequest {
       queryParameters: {"type": 1, "disstid": disstid, "outCharset": "utf-8"},
       options: Options(
         headers: {"referer": "https://y.qq.com/n/yqq/playlist/$disstid.html"},
-        responseType: ResponseType.json,
+        responseType: ResponseType.plain,
       ),
     );
     var responseStr = response.data.toString();
@@ -19,13 +19,6 @@ class HttpRequest {
     int last = responseStr.lastIndexOf(")");
     String b = responseStr.substring(start + 1, last);
     return json.decode(b);
-  }
-
-  static Future<dynamic> getMusicHome1() async {
-    var response = await dio.post(API.BASE_URL,
-        data: Body.MUSIC_HOME,
-        options: Options(responseType: ResponseType.plain));
-    return json.decode(response.data.toString());
   }
 
   static Future<dynamic> getRecMV() async {
@@ -125,22 +118,53 @@ class HttpRequest {
   }
 
   static Future<dynamic> getSingerAlbum(String singerMid) async {
-    var response = await dio.post(
-        API.BASE_URL, data: Body.singerAlbum(singerMid),
+    var response = await dio.post(API.BASE_URL,
+        data: Body.singerAlbum(singerMid),
         options: Options(responseType: ResponseType.plain));
     return json.decode(response.data.toString());
   }
 
-  static Future<dynamic> getSingerMv(String singerMid) async{
+  static Future<dynamic> getSingerMv(String singerMid) async {
     var response = await dio.get(API.MV_URL, queryParameters: {
       "inCharset": "utf8",
       "outCharset": "utf8",
       "cid": 205360581,
       "singermid": singerMid,
-      "begin":0,
-      "num":100
+      "begin": 0,
+      "num": 100
     });
-    return json.decode(response.data.toString());
+    var responseStr = response.data.toString();
+    int start = responseStr.indexOf("(");
+    int last = responseStr.lastIndexOf(")");
+    String b = responseStr.substring(start + 1, last);
+    return json.decode(b);
+  }
+
+  static Future<dynamic> getSingerDetail(String singerMid) async {
+    var responses = await Future.wait([
+      dio.post(API.BASE_URL,
+          data: Body.singerSong(singerMid),
+          options: Options(responseType: ResponseType.plain)),
+      dio.post(API.BASE_URL,
+          data: Body.singerAlbum(singerMid),
+          options: Options(responseType: ResponseType.plain)),
+      dio.get(API.MV_SINGER, queryParameters: {
+        "inCharset": "utf8",
+        "outCharset": "utf8",
+        "cid": 205360581,
+        "singermid": singerMid,
+        "order": "listen",
+        "begin": 0,
+        "num": 200
+      })
+    ]);
+
+    List<dynamic> list = List();
+    list.add(json.decode(responses[0].data.toString()));
+    list.add(json.decode(responses[1].data.toString()));
+    list.add(json.decode(responses[2].data.toString()));
+
+    return list;
   }
 }
 
@@ -163,7 +187,7 @@ class Body {
     "playlist": {
       "module": "playlist.PlayListPlazaServer",
       "method": "get_playlist_by_category",
-      "param": {"id": 3317, "size": 100, "titleid": 3317}
+      "param": {"id": 3317, "size": 12, "titleid": 3317}
     },
     "new_song": {
       "module": "newsong.NewSongServer",
@@ -218,8 +242,7 @@ class Body {
     }
   };
 
-  static toplistDetail(int topId) =>
-      {
+  static toplistDetail(int topId) => {
         "detail": {
           "module": "musicToplist.ToplistInfoServer",
           "method": "GetDetail",
@@ -227,8 +250,7 @@ class Body {
         }
       };
 
-  static singerList(int area) =>
-      {
+  static singerList(int area) => {
         "singerList": {
           "module": "Music.SingerListServer",
           "method": "get_singer_list",
@@ -243,26 +265,18 @@ class Body {
         }
       };
 
-  static singerSong(String singerMid) =>
-      {
+  static singerSong(String singerMid) => {
         "singerSongList": {
           "method": "GetSingerSongList",
-          "param": {"order": 1, "singerMid": singerMid, "begin": 0, "num": 100},
+          "param": {"order": 1, "singerMid": singerMid, "begin": 0, "num": 300},
           "module": "musichall.song_list_server"
         }
       };
 
-  static singerAlbum(String singerMid) =>
-      {
-
+  static singerAlbum(String singerMid) => {
         "getAlbumList": {
           "method": "GetAlbumList",
-          "param": {
-            "singerMid": singerMid,
-            "order": 0,
-            "begin": 0,
-            "num": 100
-          },
+          "param": {"singerMid": singerMid, "order": 0, "begin": 0, "num": 100},
           "module": "music.musichallAlbum.AlbumListServer"
         }
       };
