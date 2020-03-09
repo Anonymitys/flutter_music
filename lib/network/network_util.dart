@@ -174,6 +174,13 @@ class HttpRequest {
 
     return json.decode(response.data.toString());
   }
+
+  static Future<dynamic> getOfficialPlaylist() async {
+    var response = await dio.post(API.BASE_URL,
+        data: Body.OFFICIAL_PLAYLIST,
+        options: Options(responseType: ResponseType.plain));
+    return json.decode(response.data.toString());
+  }
 }
 
 class API {
@@ -302,4 +309,12 @@ class Body {
           "module": "music.musichallAlbum.AlbumSongList"
         }
       };
+
+  static const OFFICIAL_PLAYLIST = {
+    "playlist": {
+      "module": "playlist.PlayListPlazaServer",
+      "method": "get_playlist_by_category",
+      "param": {"id": 3317, "size": 120, "titleid": 3317}
+    },
+  };
 }

@@ -1,3 +1,21 @@
+class OfficialPlayLists {
+  OfficialPlaylist officialPlaylist;
+
+  OfficialPlayLists.fromJson(Map<String, dynamic> json) {
+    officialPlaylist = json['playlist'] != null
+        ? OfficialPlaylist.fromJson(json['playlist'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.officialPlaylist != null) {
+      data['data'] = this.officialPlaylist.toJson();
+    }
+    return data;
+  }
+}
+
 class OfficialPlaylist {
   Data data;
 
@@ -48,10 +66,10 @@ class VPlaylist {
 
   VPlaylist(
       {this.accessNum,
-        this.coverUrlBig,
-        this.createTime,
-        this.tid,
-        this.title});
+      this.coverUrlBig,
+      this.createTime,
+      this.tid,
+      this.title});
 
   VPlaylist.fromJson(Map<String, dynamic> json) {
     accessNum = json['access_num'];
@@ -71,4 +89,3 @@ class VPlaylist {
     return data;
   }
 }
-

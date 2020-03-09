@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_music/body/official_playlist_list_body.dart';
 import 'package:flutter_music/body/singer_list_body.dart';
 import 'package:flutter_music/main.dart';
 import 'package:flutter_music/unknow_page.dart';
@@ -12,6 +13,7 @@ class AppRoutes {
                   title: '音乐馆',
                 )),
         Routes.SINGER_LIST: (_) => SingerListBody(),
+        Routes.OFFICIAL_PLAYLIST: (_) => OfficialPlaylistPage(),
       };
 
   MaterialPageRoute onUnknowPage(RouteSettings settings) =>
@@ -21,4 +23,5 @@ class AppRoutes {
 class Routes {
   static const String HOME_PAGE = '/';
   static const String SINGER_LIST = '/singer_list';
+  static const String OFFICIAL_PLAYLIST = '/official_playlist';
 }

@@ -22,6 +22,7 @@ class _TopListDetailstate extends State<TopListDetailPage> {
 
   @override
   void initState() {
+    super.initState();
     _futureBuilderFuture = _requestApi(widget.topId);
   }
 

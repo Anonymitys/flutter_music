@@ -73,7 +73,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
             _banner(),
             _content(),
             title('官方歌单', '更多', 10, () {
-              print('hello world');
+             Navigator.of(context).pushNamed(Routes.OFFICIAL_PLAYLIST);
             }),
             SliverToBoxAdapter(
               child: Container(
