@@ -28,6 +28,7 @@ dependencies:
   flutter_banner_swiper: ^0.1.4
   sprintf: ^4.0.2
   intl: ^0.16.1
+  flutter_html: ^0.11.1
 
 dev_dependencies:
   flutter_test:

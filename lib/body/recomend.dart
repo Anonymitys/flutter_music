@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_music/bean/cd_list.dart';
 import 'package:flutter_music/bean/tag_entity.dart';
 import 'package:flutter_music/network/network_util.dart';
@@ -39,7 +40,7 @@ _subtitleFormat(Songlist songlist) {
 _playlist(int index) {
   return GestureDetector(
     behavior: HitTestBehavior.opaque,
-    onTap: (){
+    onTap: () {
       print(_cdlist.songlist[index].songmid);
     },
     child: Container(
@@ -145,7 +146,6 @@ class _HomePageState extends State<HomePage> {
           },
           future: _futureBuilderFuture),
     );
-
   }
 
   Widget _getMainWidget(BuildContext context) {
@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> {
           Column(
             children: <Widget>[
               Container(
-                height: 56+top,
+                height: 56 + top,
                 child: Stack(
                   children: <Widget>[
                     Opacity(
@@ -447,9 +447,10 @@ class _OfficiallistStates extends State<OfficialPlayListWidget> {
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(top: 5),
-                                  child: Text(
-                                    _cdlist.desc,
-                                    style: TextStyle(color: Colors.black54),
+                                  child: Html(
+                                    data: _cdlist.desc,
+                                    defaultTextStyle:
+                                        TextStyle(color: Colors.black54),
                                   ),
                                 ),
                               ],

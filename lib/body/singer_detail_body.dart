@@ -277,7 +277,7 @@ class _SingerDetailState extends State<SingerDetailBody> {
             overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(
-            _singerAlbum.getAlbumList.data.albumList[index].singerName,
+            '${_singerAlbum.getAlbumList.data.albumList[index].publishDate}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
