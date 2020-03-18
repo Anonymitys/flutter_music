@@ -5,7 +5,10 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_music/bean/cd_list.dart';
 import 'package:flutter_music/bean/tag_entity.dart';
 import 'package:flutter_music/network/network_util.dart';
+import 'package:flutter_music/storage/DataStorage.dart';
+import 'package:flutter_music/utils/Global.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Cdlist _cdlist;
 Color pickColor;
@@ -41,7 +44,8 @@ _playlist(int index) {
   return GestureDetector(
     behavior: HitTestBehavior.opaque,
     onTap: () {
-      print(_cdlist.songlist[index].songmid);
+      Global.getInstance().updateGlobalWidget(false,
+          cdlist: _cdlist.songlist, index: index, isPlaylist: true);
     },
     child: Container(
       margin: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),

@@ -6,9 +6,11 @@ import 'package:flutter_music/bean/home.dart';
 import 'package:flutter_music/bean/mv_detail.dart';
 import 'package:flutter_music/body/album_detail.dart';
 import 'package:flutter_music/body/recomend.dart';
+import 'package:flutter_music/body/song_album.dart';
 import 'package:flutter_music/body/top_list_detail.dart';
 import 'package:flutter_music/body/toplist.dart';
 import 'package:flutter_music/network/network_util.dart';
+import 'package:flutter_music/utils/Global.dart';
 import 'package:flutter_music/utils/util.dart';
 import 'package:flutter_music/base_widget.dart';
 
@@ -53,6 +55,9 @@ class _MusicMuseumState extends State<MusicMuseum> {
                     return Text('Error: ${snapshot.error}');
                   _musicHome = MusicHome.fromJson(snapshot.data[0]);
                   _mv = MV.fromJson(snapshot.data[1]);
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    Global.getInstance().insertGlobalWidget(context);
+                  });
                   return _getMusicHomeBody(context);
                 default:
                   return null;
@@ -73,7 +78,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
             _banner(),
             _content(),
             title('官方歌单', '更多', 10, () {
-             Navigator.of(context).pushNamed(Routes.OFFICIAL_PLAYLIST);
+              Navigator.of(context).pushNamed(Routes.OFFICIAL_PLAYLIST);
             }),
             SliverToBoxAdapter(
               child: Container(
@@ -117,7 +122,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
               ),
             ),
             title('新歌速递', '更多', 10, () {
-              print('hello world');
+              Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongandAlbumBody(true)));
             }),
             SliverToBoxAdapter(
               child: Container(
@@ -132,7 +137,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
               ),
             ),
             title('最新专辑', '更多', 10, () {
-              print('hello world');
+              Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongandAlbumBody(false)));
             }),
             SliverToBoxAdapter(
               child: Container(

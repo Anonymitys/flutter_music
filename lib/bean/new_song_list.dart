@@ -20,6 +20,7 @@ class NewSongList {
 
 class Data {
   List<SongInfo> songlist;
+  List<AreaType> areaTypes;
 
   Data({this.songlist});
 
@@ -30,6 +31,13 @@ class Data {
         songlist.add(SongInfo.fromJson(v));
       });
     }
+
+    if (json['lanlist'] != null) {
+      areaTypes = new List<AreaType>();
+      json['lanlist'].forEach((v) {
+        areaTypes.add(AreaType.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -37,9 +45,34 @@ class Data {
     if (this.songlist != null) {
       data['songlist'] = this.songlist.map((v) => v.toJson()).toList();
     }
+    if (this.areaTypes != null) {
+      data['lanlist'] = this.areaTypes.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
 
+
+class AreaType {
+  String lan;
+  String name;
+  int type;
+
+  AreaType({this.lan, this.name, this.type});
+
+  AreaType.fromJson(Map<String, dynamic> json) {
+    lan = json['lan'];
+    name = json['name'];
+    type = json['type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['lan'] = this.lan;
+    data['name'] = this.name;
+    data['type'] = this.type;
+    return data;
+  }
+}
 
 

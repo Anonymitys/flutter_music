@@ -181,6 +181,20 @@ class HttpRequest {
         options: Options(responseType: ResponseType.plain));
     return json.decode(response.data.toString());
   }
+
+  static Future<dynamic> getNewSonglist(int type) async {
+    var response = await dio.post(API.BASE_URL,
+        data: Body.newSong(type),
+        options: Options(responseType: ResponseType.plain));
+    return json.decode(response.data.toString())["new_song"];
+  }
+
+  static Future<dynamic> getNewAlbumlist(int area) async {
+    var response = await dio.post(API.BASE_URL,
+        data: Body.newAlbum(area),
+        options: Options(responseType: ResponseType.plain));
+    return json.decode(response.data.toString())["new_album"];
+  }
 }
 
 class API {
@@ -317,4 +331,20 @@ class Body {
       "param": {"id": 3317, "size": 120, "titleid": 3317}
     },
   };
+
+  static newSong(int type) => {
+        "new_song": {
+          "module": "newsong.NewSongServer",
+          "method": "get_new_song_info",
+          "param": {"type": type}
+        }
+      };
+
+  static newAlbum(int area) => {
+        "new_album": {
+          "module": "newalbum.NewAlbumServer",
+          "method": "get_new_album_info",
+          "param": {"area": area, "sin": 0, "num": 100}
+        }
+      };
 }
