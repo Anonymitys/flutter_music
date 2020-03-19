@@ -40,7 +40,7 @@ class _SongAndAlbumState extends State<SongandAlbumBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: widget.isSong ? Text('新歌') : Text('新碟'),
+        title: _titleWidget(),
         centerTitle: true,
         elevation: 0,
         bottom: TabBar(
@@ -97,27 +97,32 @@ class _SongAndAlbumState extends State<SongandAlbumBody> {
 
   _getMainWidget(context) {
     return ListView.builder(
-      itemBuilder: (context, index) =>
-          ListTile(
-            contentPadding: EdgeInsets.only(top: 15, left: 10),
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Image.network(
-                getSongPic(_songList.data.songlist[index].album.mid),
-              ),
-            ),
-            title: Text(
-              _songList.data.songlist[index].name,
-            ),
-            subtitle: Text(
-              subtitleFormat(_songList.data.songlist[index]), maxLines: 1,
-              overflow: TextOverflow.ellipsis,),
-            trailing: Offstage(offstage:_songList.data.songlist[index].mv.vid.isEmpty,
-              child: IconButton(icon: Icon(Icons.video_library), onPressed: () {
-                  print(_songList.data.songlist[index].mv.vid);
-              }),),
-            onTap: () {},
+      itemBuilder: (context, index) => ListTile(
+        contentPadding: EdgeInsets.only(top: 15, left: 10),
+        leading: ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: Image.network(
+            getSongPic(_songList.data.songlist[index].album.mid),
           ),
+        ),
+        title: Text(
+          _songList.data.songlist[index].name,
+        ),
+        subtitle: Text(
+          subtitleFormat(_songList.data.songlist[index]),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        trailing: Offstage(
+          offstage: _songList.data.songlist[index].mv.vid.isEmpty,
+          child: IconButton(
+              icon: Icon(Icons.video_library),
+              onPressed: () {
+                print(_songList.data.songlist[index].mv.vid);
+              }),
+        ),
+        onTap: () {},
+      ),
       itemCount: _songList.data.songlist.length,
     );
   }
@@ -126,56 +131,55 @@ class _SongAndAlbumState extends State<SongandAlbumBody> {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: GridView.builder(
-        itemBuilder: (context, index) =>
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) =>
-                        AlbumDetailBody(_newAlbumList.data.albums[index].mid)));
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        itemBuilder: (context, index) => GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) =>
+                    AlbumDetailBody(_newAlbumList.data.albums[index].mid)));
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Stack(
+                  alignment: Alignment.bottomRight,
                   children: <Widget>[
-                    Stack(
-                      alignment: Alignment.bottomRight,
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: Image.network(
-                            getSongPic(_newAlbumList.data.albums[index].mid),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 5, right: 5),
-                          child: Text(
-                            _newAlbumList.data.albums[index].timePublic,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      _newAlbumList.data.albums[index].name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      singerFormat(_newAlbumList.data.albums[index].singers),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image.network(
+                        getSongPic(_newAlbumList.data.albums[index].mid),
+                        fit: BoxFit.cover,
                       ),
-                    )
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 5, right: 5),
+                      child: Text(
+                        _newAlbumList.data.albums[index].timePublic,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ],
                 ),
-              ),
+                Text(
+                  _newAlbumList.data.albums[index].name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  singerFormat(_newAlbumList.data.albums[index].singers),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                )
+              ],
             ),
+          ),
+        ),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 10,
@@ -193,6 +197,57 @@ class _SongAndAlbumState extends State<SongandAlbumBody> {
     });
     return str.substring(0, str.length - 1);
   }
+
+  _titleWidget() => Container(
+        width: 150,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            GestureDetector(
+              onTap: () {
+                if (!widget.isSong) {
+                  setState(() {
+                    widget.isSong = true;
+                  });
+                }
+              },
+              child: Container(
+                padding:
+                    EdgeInsets.only(left: 15, right: 15, top: 2, bottom: 2),
+                decoration: BoxDecoration(
+                  color: widget.isSong ? Colors.red : Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  '新歌',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                if (widget.isSong) {
+                  setState(() {
+                    widget.isSong = false;
+                  });
+                }
+              },
+              child: Container(
+                padding:
+                    EdgeInsets.only(left: 15, right: 15, top: 2, bottom: 2),
+                decoration: BoxDecoration(
+                  color: widget.isSong ? Colors.transparent : Colors.red,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  '新碟',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
 }
 
 class Tag {

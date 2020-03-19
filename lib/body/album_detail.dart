@@ -212,7 +212,7 @@ class _AlbumDetailState extends State<AlbumDetailBody> {
                 children: <Widget>[
                   Text(
                     _albumDetail
-                        .albumSonglist.albumInfo.songList[index].songInfo.name,
+                        .albumSonglist.albumInfo.songList[index].songInfo.title,
                     style: TextStyle(fontSize: 16),
                   ),
                   Padding(padding: EdgeInsets.only(top: 3)),

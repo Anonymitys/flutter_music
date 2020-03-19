@@ -195,6 +195,23 @@ class HttpRequest {
         options: Options(responseType: ResponseType.plain));
     return json.decode(response.data.toString())["new_album"];
   }
+
+  static Future<dynamic> getPlaylistCatagory() async {
+    var response = await dio.get(
+      API.PLAY_LIST_CATAGORY,
+      queryParameters: {"outCharset": "utf-8"},
+      options: Options(
+        headers: {"referer": "https://y.qq.com/portal/playlist.html"},
+        responseType: ResponseType.plain,
+      ),
+    );
+    var responseStr = response.data.toString();
+    int start = responseStr.indexOf("(");
+    int last = responseStr.lastIndexOf(")");
+    String b = responseStr.substring(start + 1, last);
+    return json.decode(b);
+  }
+
 }
 
 class API {
@@ -204,6 +221,8 @@ class API {
   static const MV_URL = 'https://c.y.qq.com/mv/fcgi-bin/getmv_by_tag';
 
   static const MV_SINGER = "https://c.y.qq.com/mv/fcgi-bin/fcg_singer_mv.fcg";
+
+  static const PLAY_LIST_CATAGORY = "https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_tag_conf.fcg";
 }
 
 class Body {

@@ -278,7 +278,9 @@ class _MusicMuseumState extends State<MusicMuseum> {
                 ),
               );
             }),
-            _contentItem('images/sort_play_list.png', '分类歌单', () {}),
+            _contentItem('images/sort_play_list.png', '分类歌单', () {
+              Navigator.of(context).pushNamed(Routes.PLAY_LIST_CATAGORY);
+            }),
           ],
         ),
       );
