@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_music/app_routes.dart';
 import 'package:flutter_music/base_widget.dart';
 import 'package:flutter_music/bean/mv_detail.dart';
 import 'package:flutter_music/bean/mv_list_and_tag.dart';
 import 'package:flutter_music/bean/top_mv_list.dart';
+import 'package:flutter_music/body/top_mv_list_body.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/util.dart';
 
@@ -65,7 +67,7 @@ class _MusicVideoState extends State<MusicVideo> {
       child: CustomScrollView(
         slivers: <Widget>[
           title('MV精选', '更多', 0, () {
-            print('hello world');
+            Navigator.of(context).pushNamed(Routes.NEW_MV_LIST);
           }),
           SliverGrid(
             delegate: SliverChildBuilderDelegate(
@@ -79,7 +81,7 @@ class _MusicVideoState extends State<MusicVideo> {
                 childAspectRatio: 9/8),
           ),
           _mvRankBanner(() {
-            print("hello world");
+           Navigator.of(context).pushNamed(Routes.TOP_MV_LIST);
           }),
           title('更多精彩MV', '分类', 0, () {
             print("hello world");

@@ -5,6 +5,7 @@ import 'package:flutter_music/bean/group_top_list.dart';
 import 'package:flutter_music/bean/home.dart';
 import 'package:flutter_music/bean/mv_detail.dart';
 import 'package:flutter_music/body/album_detail.dart';
+import 'package:flutter_music/body/play_list_catagory_body.dart';
 import 'package:flutter_music/body/recomend.dart';
 import 'package:flutter_music/body/song_album.dart';
 import 'package:flutter_music/body/top_list_detail.dart';
@@ -100,7 +101,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
               ),
             ),
             title('推荐歌单', '更多', 10, () {
-              print('hello world');
+              Navigator.of(context).pushNamed(Routes.PLAY_LIST_CATAGORY);
             }),
             SliverToBoxAdapter(
               child: Container(
@@ -155,7 +156,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
               ),
             ),
             title('精选视频', '更多', 10, () {
-              print('hello world');
+              Navigator.of(context).pushNamed(Routes.NEW_MV_LIST);
             }),
             SliverToBoxAdapter(
               child: Container(

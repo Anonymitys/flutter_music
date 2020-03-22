@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_music/bean/album_entity.dart';
 import 'package:flutter_music/bean/cd_list.dart';
 import 'package:flutter_music/body/play_detail.dart';
+import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,7 +45,7 @@ class Global {
       right: 10,
       top: 40,
       child: GestureDetector(
-        onTap: () {
+        onTap: () async{
           hide = true;
           _overlayEntry.markNeedsBuild();
           Navigator.of(context).push(MaterialPageRoute(

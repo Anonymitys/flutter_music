@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_music/bean/playlist_catagory.dart';
+import 'package:flutter_music/body/play_list.dart';
 import 'package:flutter_music/network/network_util.dart';
 
 class PlaylistCatagoryBody extends StatefulWidget {
@@ -53,9 +55,12 @@ class _PlaylistCatagoryState extends State<PlaylistCatagoryBody> {
   }
 
   _getMainWidget(context) {
-    return ListView.builder(
-      itemBuilder: (context, index) => _ItemCatagory(context, index),
-      itemCount: _catagory.data.categories.length,
+    return Container(
+      margin: EdgeInsets.only(left: 10, right: 10),
+      child: ListView.builder(
+        itemBuilder: (context, index) => _ItemCatagory(context, index),
+        itemCount: _catagory.data.categories.length,
+      ),
     );
   }
 
@@ -64,24 +69,50 @@ class _PlaylistCatagoryState extends State<PlaylistCatagoryBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(_catagory.data.categories[index].categoryGroupName),
+          Container(
+            padding: EdgeInsets.only(top: 15, bottom: 15),
+            child: Text(
+              _catagory.data.categories[index].categoryGroupName,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 20,
+              ),
+            ),
+          ),
           GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              mainAxisSpacing: 5,
-              crossAxisSpacing: 10,
-              childAspectRatio: 2.5
-            ),
-            itemBuilder: (context, subIndex) => Container(
-              padding: EdgeInsets.only(top: 5,bottom: 5),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+                crossAxisCount: 4,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 2.5),
+            itemBuilder: (context, subIndex) => GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => PlayListBody(
+                          _catagory.data.categories[index].items[subIndex]
+                              .categoryId,
+                          _catagory.data.categories[index].items[subIndex]
+                              .categoryName,
+                          5,
+                        )));
+              },
+              child: Container(
+                padding: EdgeInsets.only(top: 5, bottom: 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.red,width: 1),
+                ),
+                child: Center(
+                  child: Html(
+                    data: _catagory
+                        .data.categories[index].items[subIndex].categoryName,
+                    customTextAlign: (_) => TextAlign.center,
+                  ),
+                ),
               ),
-              child: Text(_catagory
-                  .data.categories[index].items[subIndex].categoryName),
             ),
             itemCount: _catagory.data.categories[index].items.length,
           ),

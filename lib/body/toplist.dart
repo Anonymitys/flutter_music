@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music/body/top_list_detail.dart';
+import 'package:flutter_music/body/top_mv_list_body.dart';
 
 import '../bean/group_top_list.dart';
 import '../utils/util.dart';
@@ -27,7 +28,9 @@ class TopListBody extends StatelessWidget {
                   index,
                   (topId) {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => TopListDetailPage(topId)));
+                        builder: (context) => topId == 201
+                            ? TopMVListBody()
+                            : TopListDetailPage(topId)));
                   },
                 ),
                 childCount: groupTop[0].toplist.length,
@@ -110,17 +113,6 @@ class TopListBody extends StatelessWidget {
                                           color: Colors.grey, fontSize: 12),
                                     )
                                   ])),
-//                          Row(
-//                            children: <Widget>[
-//                              Text(
-//                                  '${i + 1}. ${groupTop[0].toplist[index].song[i].title}'),
-//                              Text(
-//                                ' - ${groupTop[0].toplist[index].song[i].singerName}',
-//                                style:
-//                                    TextStyle(color: Colors.grey, fontSize: 12),
-//                              )
-//                            ],
-//                          ),
                         );
                       },
                       itemCount: groupTop[0].toplist[index].song.length,

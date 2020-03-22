@@ -72,7 +72,7 @@ class HttpRequest {
       }),
       dio.post(
         API.BASE_URL,
-        data: Body.TOP_LIST_MV,
+        data: Body.getTopMVlist(0),
         options: Options(responseType: ResponseType.plain),
       ),
       dio.post(
@@ -212,6 +212,59 @@ class HttpRequest {
     return json.decode(b);
   }
 
+  static Future<dynamic> getPlaylist(int categoryId, int sortId) async {
+    var response = await dio.get(
+      API.PLAY_LIST,
+      queryParameters: {
+        "outCharset": "utf-8",
+        "categoryId": categoryId,
+        "sortId": sortId,
+        "sin": 0,
+        "ein": 100
+      },
+      options: Options(
+        headers: {"referer": "https://y.qq.com/portal/playlist.html"},
+        responseType: ResponseType.plain,
+      ),
+    );
+    var responseStr = response.data.toString();
+    int start = responseStr.indexOf("(");
+    int last = responseStr.lastIndexOf(")");
+    String b = responseStr.substring(start + 1, last);
+    return json.decode(b);
+  }
+
+  static Future<dynamic> getTopMvlist(int areaType) async {
+    var response = await dio.post(
+      API.BASE_URL,
+      data: Body.getTopMVlist(areaType),
+      options: Options(responseType: ResponseType.plain),
+    );
+    return json.decode(response.data.toString());
+  }
+
+  static Future<dynamic> getRecMVlist(String lan) async {
+    var response = await dio.get(API.MV_URL, queryParameters: {
+      "inCharset": "utf8",
+      "outCharset": "GB2312",
+      "cmd": "shoubo",
+      "lan": lan
+    });
+    var responseStr = response.data.toString();
+    int start = responseStr.indexOf("(");
+    int last = responseStr.lastIndexOf(")");
+    String b = responseStr.substring(start + 1, last);
+    return json.decode(b);
+  }
+
+  static Future<dynamic> getvKey(String songMid) async {
+    var response = await dio.post(
+      API.BASE_URL,
+      data: Body.getvKey(songMid),
+      options: Options(responseType: ResponseType.plain),
+    );
+    return json.decode(response.data.toString())['req_0']['data']['midurlinfo'][0]['purl'];
+  }
 }
 
 class API {
@@ -222,7 +275,11 @@ class API {
 
   static const MV_SINGER = "https://c.y.qq.com/mv/fcgi-bin/fcg_singer_mv.fcg";
 
-  static const PLAY_LIST_CATAGORY = "https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_tag_conf.fcg";
+  static const PLAY_LIST_CATAGORY =
+      "https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_tag_conf.fcg";
+
+  static const PLAY_LIST =
+      "https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg";
 }
 
 class Body {
@@ -259,17 +316,17 @@ class Body {
     }
   };
 
-  static const TOP_LIST_MV = {
-    "request": {
-      "method": "get_video_rank_list",
-      "param": {
-        "rank_type": 0,
-        "area_type": 0,
-        "required": ["vid", "name", "singers", "cover_pic", "pubdate"]
-      },
-      "module": "video.VideoRankServer"
-    }
-  };
+  static getTopMVlist(int areaType) => {
+        "request": {
+          "method": "get_video_rank_list",
+          "param": {
+            "rank_type": 0,
+            "area_type": areaType,
+            "required": ["vid", "name", "singers", "cover_pic", "pubdate"]
+          },
+          "module": "video.VideoRankServer"
+        }
+      };
 
   static const MV_CATEGORY = {
     "mv_tag": {
@@ -364,6 +421,18 @@ class Body {
           "module": "newalbum.NewAlbumServer",
           "method": "get_new_album_info",
           "param": {"area": area, "sin": 0, "num": 100}
+        }
+      };
+
+  static getvKey(String songMid) => {
+        "req_0": {
+          "module": "vkey.GetVkeyServer",
+          "method": "CgiGetVkey",
+          "param": {
+            "guid": "7163709783",
+            "songmid": [songMid],
+            "uin": "0"
+          }
         }
       };
 }
