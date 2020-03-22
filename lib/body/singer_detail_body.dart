@@ -1,12 +1,15 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_music/app_routes.dart';
 import 'package:flutter_music/bean/singer_album.dart';
 import 'package:flutter_music/bean/singer_list.dart';
 import 'package:flutter_music/bean/singer_mv.dart';
 import 'package:flutter_music/bean/singer_song.dart';
 import 'package:flutter_music/body/album_detail.dart';
+import 'package:flutter_music/data/global_variable.dart';
 import 'package:flutter_music/network/network_util.dart';
+import 'package:flutter_music/utils/event_bus_util.dart';
 import 'package:flutter_music/utils/util.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -25,6 +28,7 @@ class _SingerDetailState extends State<SingerDetailBody> {
   var showTitle = 0.0;
   var hideTab = true;
   int type = 1;
+  bool isFirstClick = true;
 
   SingerSong _singerSong;
   SingerAlbum _singerAlbum;
@@ -251,7 +255,17 @@ class _SingerDetailState extends State<SingerDetailBody> {
                 }),
           ),
           onTap: () {
-            print(_singerSong.singerSongList.data.songList[index].songInfo.mid);
+            // print(_singerSong.singerSongList.data.songList[index].songInfo.mid);
+            if (isFirstClick) {
+              isFirstClick = false;
+              songDetails.clear();
+              _singerSong.singerSongList.data.songList.forEach((v) {
+                songDetails.add(v.songInfo);
+              });
+            }
+            globalCurrentIndex = index;
+            eventBus.fire(CurrentPlayAlbumEvent(_singerSong.singerSongList.data.songList[index].songInfo.album.mid));
+            Navigator.of(context).pushNamed(Routes.PLAY_DETAIL);
           },
         ),
       ),

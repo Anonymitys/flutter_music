@@ -48,13 +48,6 @@ class Global {
         onTap: () async{
           hide = true;
           _overlayEntry.markNeedsBuild();
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => PlayDetailBody(
-                    this.isPlayList,
-                    currentIndex,
-                    cdlist: cdlists,
-                    songlists: songLists,
-                  )));
         },
         child: Offstage(
           offstage: hide,

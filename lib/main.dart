@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_music/app_routes.dart';
 import 'package:flutter_music/body/music_museum.dart';
 import 'package:flutter_music/body/music_video.dart';
-import 'package:flutter_music/body/recomend.dart';
-import 'package:flutter_music/network/network_util.dart';
+import 'package:flutter_music/utils/event_bus_util.dart';
+import 'package:flutter_music/utils/util.dart';
+
+import 'body/play_detail.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,10 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-        primaryColor: Colors.white
-      ),
+      theme: ThemeData(primarySwatch: Colors.red, primaryColor: Colors.white),
       routes: appRoutes.routes,
       onUnknownRoute: (settings) => appRoutes.onUnknowPage(settings),
     );
@@ -53,12 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    super.initState();
     Future.delayed(Duration(seconds: 3)).then((value) {
       setState(() {
         showPic = false;
       });
     });
+    super.initState();
   }
 
   @override
@@ -86,6 +87,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: Text('视频'),
                 ),
                 BottomNavigationBarItem(
+                  icon: StreamBuilder<CurrentPlayAlbumEvent>(
+                    stream: eventBus.on<CurrentPlayAlbumEvent>(),
+                    initialData:
+                        CurrentPlayAlbumEvent(getSongPic('0022PtPf4GT8MT')),
+                    builder: (context, snapshot) => ClipOval(
+                      child: Image.network(
+                        getSongPic(snapshot.data.url),
+                        width: 40,
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                  title: Offstage(
+                    offstage: true,
+                    child: Text(''),
+                  ),
+                ),
+                BottomNavigationBarItem(
                   icon: Icon(Icons.radio),
                   title: Text('电台'),
                 ),
@@ -95,9 +114,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
               onTap: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
+                if (index == 2) {
+                   Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PlayDetailBody()));
+                } else {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                }
               },
             ),
           );

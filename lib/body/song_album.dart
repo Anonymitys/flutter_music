@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_music/app_routes.dart';
 import 'package:flutter_music/bean/new_album_list.dart';
 import 'package:flutter_music/bean/new_song_list.dart';
 import 'package:flutter_music/bean/singer_entity.dart';
 import 'package:flutter_music/bean/singer_list.dart';
 import 'package:flutter_music/body/album_detail.dart';
+import 'package:flutter_music/data/global_variable.dart';
 import 'package:flutter_music/network/network_util.dart';
+import 'package:flutter_music/utils/event_bus_util.dart';
 import 'package:flutter_music/utils/util.dart';
 
 class SongandAlbumBody extends StatefulWidget {
@@ -121,7 +124,12 @@ class _SongAndAlbumState extends State<SongandAlbumBody> {
                 print(_songList.data.songlist[index].mv.vid);
               }),
         ),
-        onTap: () {},
+        onTap: () {
+          songDetails = _songList.data.songlist;
+          globalCurrentIndex = index;
+          eventBus.fire(CurrentPlayAlbumEvent(_songList.data.songlist[index].album.mid));
+          Navigator.of(context).pushNamed(Routes.PLAY_DETAIL);
+        },
       ),
       itemCount: _songList.data.songlist.length,
     );

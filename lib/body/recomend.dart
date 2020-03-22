@@ -2,11 +2,16 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_music/app_routes.dart';
 import 'package:flutter_music/bean/cd_list.dart';
+import 'package:flutter_music/bean/song_detail.dart';
 import 'package:flutter_music/bean/tag_entity.dart';
+import 'package:flutter_music/data/global_variable.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/storage/DataStorage.dart';
 import 'package:flutter_music/utils/Global.dart';
+import 'package:flutter_music/utils/event_bus_util.dart';
+import 'package:flutter_music/utils/util.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,12 +45,15 @@ _subtitleFormat(Songlist songlist) {
   return '${str.substring(0, str.length - 1)}·${songlist.albumname}';
 }
 
-_playlist(int index) {
+_playlist(BuildContext context,int index) {
   return GestureDetector(
     behavior: HitTestBehavior.opaque,
     onTap: () {
-      Global.getInstance().updateGlobalWidget(false,
-          cdlist: _cdlist.songlist, index: index, isPlaylist: true);
+      globalCurrentIndex = index;
+      songDetails = _cdlist.songlist;
+      eventBus.fire(
+          CurrentPlayAlbumEvent(_cdlist.songlist[index].albummid));
+      Navigator.of(context).pushNamed(Routes.PLAY_DETAIL);
     },
     child: Container(
       margin: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
@@ -178,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                 ],
                 body: ListView.builder(
                   physics: ClampingScrollPhysics(),
-                  itemBuilder: (_, index) => _playlist(index),
+                  itemBuilder: (context, index) => _playlist(context,index),
                   itemCount: _cdlist.songlist.length,
                 ),
               ),
@@ -469,7 +477,7 @@ class _OfficiallistStates extends State<OfficialPlayListWidget> {
                   ],
                   body: ListView.builder(
                     physics: ClampingScrollPhysics(),
-                    itemBuilder: (_, index) => _playlist(index),
+                    itemBuilder: (context, index) => _playlist(context,index),
                     itemCount: _cdlist.songlist.length,
                   ),
                 ),

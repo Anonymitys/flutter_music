@@ -1,4 +1,5 @@
 import 'package:flutter_music/bean/singer_entity.dart';
+import 'package:flutter_music/bean/song_detail.dart';
 
 import 'mv_entity.dart';
 
@@ -103,7 +104,7 @@ class SongList {
   }
 }
 
-class SongInfo {
+class SongInfo implements SongDetail{
   int id;
   String mid;
   String name;
@@ -160,6 +161,31 @@ class SongInfo {
     }
     data['time_public'] = this.timePublic;
     return data;
+  }
+
+  @override
+  String getAlbumMid() {
+    return album.mid;
+  }
+
+  @override
+  String getAlbumName() {
+    return album.name;
+  }
+
+  @override
+  List<Singer> getSingers() {
+    return singer;
+  }
+
+  @override
+  String getSongMid() {
+    return mid;
+  }
+
+  @override
+  String getSongName() {
+    return name;
   }
 }
 

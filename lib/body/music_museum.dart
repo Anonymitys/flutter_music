@@ -56,9 +56,6 @@ class _MusicMuseumState extends State<MusicMuseum> {
                     return Text('Error: ${snapshot.error}');
                   _musicHome = MusicHome.fromJson(snapshot.data[0]);
                   _mv = MV.fromJson(snapshot.data[1]);
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    Global.getInstance().insertGlobalWidget(context);
-                  });
                   return _getMusicHomeBody(context);
                 default:
                   return null;

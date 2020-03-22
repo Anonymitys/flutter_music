@@ -87,7 +87,7 @@ class _PlaylistCatagoryState extends State<PlaylistCatagoryBody> {
                 crossAxisCount: 4,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
-                childAspectRatio: 2.5),
+                childAspectRatio: 2),
             itemBuilder: (context, subIndex) => GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(

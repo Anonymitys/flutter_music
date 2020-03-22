@@ -3,20 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_music/bean/album_entity.dart';
 import 'package:flutter_music/bean/cd_list.dart';
+import 'package:flutter_music/data/global_variable.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/Global.dart';
 import 'package:flutter_music/utils/util.dart';
 import 'package:flutter_music/widget.dart';
 
 class PlayDetailBody extends StatefulWidget {
-  bool isPlayList;
 
-  List<Songlist> cdlist;
-  List<SongList> songlists;
-  int currentIndex;
-
-  PlayDetailBody(this.isPlayList, this.currentIndex,
-      {this.cdlist, this.songlists});
+  PlayDetailBody();
 
   @override
   State createState() => _PlayDetailState();
@@ -29,8 +24,7 @@ class _PlayDetailState extends State<PlayDetailBody> {
   @override
   void initState() {
     super.initState();
-    _futureBuilderFuture = HttpRequest.getvKey(
-        widget.isPlayList ? widget.cdlist[widget.currentIndex].songmid : null);
+    _futureBuilderFuture = HttpRequest.getvKey(songDetails[globalCurrentIndex].getSongMid());
   }
 
   @override
@@ -72,22 +66,12 @@ class _PlayDetailState extends State<PlayDetailBody> {
           width: 300,
           height: 300,
           child: Image.network(
-            getSongPic(widget.cdlist[widget.currentIndex].albummid),
+            getSongPic(songDetails[globalCurrentIndex].getAlbumMid()),
             fit: BoxFit.cover,
           ),
         ),
         PlayerWidget(url: url),
       ],
     );
-  }
-
-  @override
-  void deactivate() {
-    Global.getInstance().updateGlobalWidget(false,
-        index: widget.currentIndex,
-        songlist: widget.songlists,
-        cdlist: widget.cdlist,
-        isPlaylist: widget.isPlayList);
-    super.deactivate();
   }
 }

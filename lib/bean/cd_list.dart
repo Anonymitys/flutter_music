@@ -1,6 +1,7 @@
 // 歌单详情
 
 import 'package:flutter_music/bean/singer_entity.dart';
+import 'package:flutter_music/bean/song_detail.dart';
 import 'package:flutter_music/bean/tag_entity.dart';
 
 class PlayList {
@@ -109,7 +110,7 @@ class Cdlist {
   }
 }
 
-class Songlist {
+class Songlist implements SongDetail{
   String albumdesc;
   int albumid;
   String albummid;
@@ -162,5 +163,30 @@ class Songlist {
     data['songname'] = this.songname;
     data['vid'] = this.vid;
     return data;
+  }
+
+  @override
+  String getAlbumMid() {
+    return albummid;
+  }
+
+  @override
+  String getAlbumName() {
+    return albumname;
+  }
+
+  @override
+  List<Singer> getSingers() {
+    return singer;
+  }
+
+  @override
+  String getSongMid() {
+    return songmid;
+  }
+
+  @override
+  String getSongName() {
+    return songname;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music/body/mv_list_new.dart';
 import 'package:flutter_music/body/official_playlist_list_body.dart';
+import 'package:flutter_music/body/play_detail.dart';
 import 'package:flutter_music/body/play_list_catagory_body.dart';
 import 'package:flutter_music/body/singer_list_body.dart';
 import 'package:flutter_music/body/song_album.dart';
@@ -21,6 +22,7 @@ class AppRoutes {
         Routes.PLAY_LIST_CATAGORY: (_) => PlaylistCatagoryBody(),
         Routes.TOP_MV_LIST: (_) => TopMVListBody(),
         Routes.NEW_MV_LIST: (_) => MVListNewBody(),
+        Routes.PLAY_DETAIL: (_) => PlayDetailBody(),
       };
 
   MaterialPageRoute onUnknowPage(RouteSettings settings) =>
@@ -34,4 +36,5 @@ class Routes {
   static const String PLAY_LIST_CATAGORY = '/play_list_catagory';
   static const String TOP_MV_LIST = '/top_mv_list';
   static const String NEW_MV_LIST = '/new_mv_list';
+  static const String PLAY_DETAIL = '/play_detail';
 }
