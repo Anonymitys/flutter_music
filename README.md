@@ -7,7 +7,7 @@
 <img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/screenshots/1.jpg" />
 <img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/screenshots/2.jpg" /><br><br>
 <img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/screenshots/3.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/screenshots/4.jpg.jpg" /><br><br>
+<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/screenshots/4.jpg" /><br><br>
 <img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/screenshots/5.jpg" />
 <img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/screenshots/6.jpg" /><br><br>
 <img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/screenshots/7.jpg" />
