@@ -312,7 +312,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
     _playerCompleteSubscription =
         audioPlayerUtil.getAudioPlayer().onPlayerCompletion.listen((event) {
-          _onComplete();
+        //  _onComplete();
         });
 
     _playerErrorSubscription = audioPlayerUtil.getAudioPlayer().onPlayerError.listen((msg) {

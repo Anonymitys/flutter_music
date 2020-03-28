@@ -270,7 +270,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   void _onComplete() {
     print("_onComplete");
-    _playNext();
+    //_playNext();
   }
 
   void _initAudioPlayer() {

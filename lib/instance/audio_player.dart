@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_music/data/global_variable.dart';
+import 'package:flutter_music/network/network_util.dart';
+import 'package:flutter_music/utils/event_bus_util.dart';
 
 //var audioPlayer = AudioPlayer();
 
@@ -14,6 +17,7 @@ class AudioPlayerUtil {
   StreamSubscription _positionSubscription;
   StreamSubscription _playerErrorSubscription;
   StreamSubscription _playerStateSubscription;
+  StreamSubscription _playerCompleteSubscription;
 
   Duration _duration;
   Duration _position;
@@ -44,6 +48,11 @@ class AudioPlayerUtil {
     audioPlayerUtil.getAudioPlayer().onPlayerStateChanged.listen((state) {
       _audioPlayerState = state;
     });
+
+    _playerCompleteSubscription =
+        audioPlayerUtil.getAudioPlayer().onPlayerCompletion.listen((event) {
+          _playNext();
+        });
   }
 
   AudioPlayer getAudioPlayer() {
@@ -62,9 +71,27 @@ class AudioPlayerUtil {
     return _audioPlayerState;
   }
 
+  Future<int> _playNext() async {
+    String url = "";
+    globalCurrentIndex++;
+    print(globalCurrentIndex);
+    if (globalCurrentIndex >= songDetails.length) {
+      globalCurrentIndex = 0;
+    }
+    await HttpRequest.getvKey(songDetails[globalCurrentIndex].getSongMid())
+        .then((value) {
+      url = 'http://ws.stream.qqmusic.qq.com/$value';
+    });
+    final result = await audioPlayerUtil.getAudioPlayer().play(url);
+    eventBus.fire(
+        CurrentPlayAlbumEvent(songDetails[globalCurrentIndex].getAlbumMid()));
+    if (result == 1) _audioPlayerState = AudioPlayerState.PLAYING;
+    audioPlayerUtil.getAudioPlayer().setPlaybackRate(playbackRate: 1.0);
+
+    return result;
+  }
+
   void dispose() {
     _audioPlayer.stop();
   }
 }
-
-
