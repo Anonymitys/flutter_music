@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: StreamBuilder<CurrentPlayAlbumEvent>(
                     stream: eventBus.on<CurrentPlayAlbumEvent>(),
                     initialData:
-                        CurrentPlayAlbumEvent(getSongPic('0022PtPf4GT8MT')),
+                        CurrentPlayAlbumEvent('0022PtPf4GT8MT'),
                     builder: (context, snapshot) => ClipOval(
                       child: Image.network(
                         getSongPic(snapshot.data.url),

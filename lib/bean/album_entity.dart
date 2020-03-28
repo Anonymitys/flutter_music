@@ -185,7 +185,7 @@ class SongInfo implements SongDetail{
 
   @override
   String getSongName() {
-    return name;
+    return title;
   }
 }
 
