@@ -10,16 +10,16 @@ import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/event_bus_util.dart';
 import 'package:flutter_music/utils/util.dart';
 
-class PlayDetailBody extends StatefulWidget {
+class PlayDetailBodyHome extends StatefulWidget {
   final bool autoPlay;
 
-  PlayDetailBody({this.autoPlay = true});
+  PlayDetailBodyHome({this.autoPlay = true});
 
   @override
   State createState() => _PlayDetailState();
 }
 
-class _PlayDetailState extends State<PlayDetailBody> {
+class _PlayDetailState extends State<PlayDetailBodyHome> {
   String url;
 
   @override
@@ -68,10 +68,10 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   String url;
   PlayerMode mode = PlayerMode.MEDIA_PLAYER;
 
- // AudioPlayer _audioPlayer;
-  AudioPlayerState _audioPlayerState;
-  Duration _duration;
-  Duration _position;
+  // AudioPlayer _audioPlayer;
+  AudioPlayerState _audioPlayerState = audioPlayerUtil.getPlayState();
+  Duration _duration = audioPlayerUtil.getDuration();
+  Duration _position = audioPlayerUtil.getPosition();
 
   PlayerState _playerState = PlayerState.stopped;
   StreamSubscription _durationSubscription;
@@ -85,12 +85,9 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   String get _positionText => _position?.toString()?.split('.')?.first?.substring(2) ?? '';
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
     _initAudioPlayer();
-    if (widget.autoPlay) {
-      _play();
-    }
   }
 
   @override
@@ -164,9 +161,9 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                           .seek(Duration(milliseconds: position.round()));
                     },
                     value: (_position != null &&
-                            _duration != null &&
-                            _position.inMilliseconds > 0 &&
-                            _position.inMilliseconds < _duration.inMilliseconds)
+                        _duration != null &&
+                        _position.inMilliseconds > 0 &&
+                        _position.inMilliseconds < _duration.inMilliseconds)
                         ? _position.inMilliseconds / _duration.inMilliseconds
                         : 0.0,
                   ),
@@ -194,9 +191,9 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       });
     }
     final playPosition = (_position != null &&
-            _duration != null &&
-            _position.inMilliseconds > 0 &&
-            _position.inMilliseconds < _duration.inMilliseconds)
+        _duration != null &&
+        _position.inMilliseconds > 0 &&
+        _position.inMilliseconds < _duration.inMilliseconds)
         ? _position
         : null;
     final result = await audioPlayerUtil.getAudioPlayer().play(url, position: playPosition);
@@ -278,7 +275,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   }
 
   void _initAudioPlayer() {
-   // _audioPlayer = AudioPlayer(mode: mode);
+    // _audioPlayer = AudioPlayer(mode: mode);
 
     _durationSubscription = audioPlayerUtil.getAudioPlayer().onDurationChanged.listen((duration) {
       setState(() {
@@ -308,13 +305,13 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
     _positionSubscription =
         audioPlayerUtil.getAudioPlayer().onAudioPositionChanged.listen((p) => setState(() {
-              _position = p;
-            }));
+          _position = p;
+        }));
 
     _playerCompleteSubscription =
         audioPlayerUtil.getAudioPlayer().onPlayerCompletion.listen((event) {
-      _onComplete();
-    });
+          _onComplete();
+        });
 
     _playerErrorSubscription = audioPlayerUtil.getAudioPlayer().onPlayerError.listen((msg) {
       print('audioPlayer error : $msg');

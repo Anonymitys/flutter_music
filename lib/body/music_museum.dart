@@ -10,8 +10,10 @@ import 'package:flutter_music/body/recomend.dart';
 import 'package:flutter_music/body/song_album.dart';
 import 'package:flutter_music/body/top_list_detail.dart';
 import 'package:flutter_music/body/toplist.dart';
+import 'package:flutter_music/data/global_variable.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/Global.dart';
+import 'package:flutter_music/utils/event_bus_util.dart';
 import 'package:flutter_music/utils/util.dart';
 import 'package:flutter_music/base_widget.dart';
 
@@ -120,22 +122,22 @@ class _MusicMuseumState extends State<MusicMuseum> {
               ),
             ),
             title('新歌速递', '更多', 10, () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongandAlbumBody(true)));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => SongandAlbumBody(true)));
             }),
             SliverToBoxAdapter(
               child: Container(
                 height: 380,
                 child: PageView.custom(
                     childrenDelegate: SliverChildBuilderDelegate(
-                  (context, index) => _sonlistItem(index, (songMid) {
-                    print(songMid);
-                  }),
+                  (context, index) => _sonlistItem(index),
                   childCount: 3,
                 )),
               ),
             ),
             title('最新专辑', '更多', 10, () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongandAlbumBody(false)));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => SongandAlbumBody(false)));
             }),
             SliverToBoxAdapter(
               child: Container(
@@ -432,14 +434,16 @@ class _MusicMuseumState extends State<MusicMuseum> {
     );
   }
 
-  Widget _sonlistItem(int index, void Function(String songMid) callback) {
+  Widget _sonlistItem(int index) {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       itemCount: 5,
       itemBuilder: (context, i) => ListTile(
           onTap: () {
-            callback(_musicHome.newSongList.data.songlist[i + 5 * index].mid);
-            // callback(i + 5 * index);
+            songDetails = _musicHome.newSongList.data.songlist;
+            globalCurrentIndex = i + 5 * index;
+            Navigator.of(context).pushNamed(Routes.PLAY_DETAIL);
+            eventBus.fire(CurrentPlayAlbumEvent(songDetails[globalCurrentIndex].getAlbumMid()));
           },
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(5),

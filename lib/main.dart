@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_music/app_routes.dart';
 import 'package:flutter_music/body/music_museum.dart';
 import 'package:flutter_music/body/music_video.dart';
+import 'package:flutter_music/body/play_detail_home.dart';
+import 'package:flutter_music/instance/audio_player.dart';
 import 'package:flutter_music/utils/event_bus_util.dart';
 import 'package:flutter_music/utils/util.dart';
 
@@ -59,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
         showPic = false;
       });
     });
+    audioPlayerUtil.init();
     super.initState();
   }
 
@@ -115,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
               onTap: (index) {
                 if (index == 2) {
-                   Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PlayDetailBody()));
+                   Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PlayDetailBodyHome()));
                 } else {
                   setState(() {
                     _currentIndex = index;

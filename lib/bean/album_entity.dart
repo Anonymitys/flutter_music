@@ -1,3 +1,4 @@
+import 'package:flutter_music/bean/cd_list.dart';
 import 'package:flutter_music/bean/singer_entity.dart';
 import 'package:flutter_music/bean/song_detail.dart';
 
@@ -104,7 +105,7 @@ class SongList {
   }
 }
 
-class SongInfo implements SongDetail{
+class SongInfo implements Songlist{
   int id;
   String mid;
   String name;
@@ -187,6 +188,31 @@ class SongInfo implements SongDetail{
   String getSongName() {
     return title;
   }
+
+  @override
+  String albumdesc;
+
+  @override
+  int albumid;
+
+  @override
+  String albummid;
+
+  @override
+  String albumname;
+
+  @override
+  int songid;
+
+  @override
+  String songmid;
+
+  @override
+  String songname;
+
+  @override
+  String vid;
+
 }
 
 
