@@ -96,11 +96,11 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   @override
   void dispose() {
 //    _audioPlayer.stop();
-//    _durationSubscription?.cancel();
-//    _positionSubscription?.cancel();
-//    _playerCompleteSubscription?.cancel();
-//    _playerErrorSubscription?.cancel();
-//    _playerStateSubscription?.cancel();
+    _durationSubscription?.cancel();
+    _positionSubscription?.cancel();
+    _playerCompleteSubscription?.cancel();
+    _playerErrorSubscription?.cancel();
+    _playerStateSubscription?.cancel();
     super.dispose();
   }
 
@@ -212,6 +212,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   Future<int> _playNext() async {
     globalCurrentIndex++;
+    print(globalCurrentIndex);
     if (globalCurrentIndex >= songDetails.length) {
       globalCurrentIndex = 0;
     }
@@ -219,12 +220,6 @@ class _PlayerWidgetState extends State<PlayerWidget> {
         .then((value) {
       url = 'http://ws.stream.qqmusic.qq.com/$value';
     });
-//    final playPosition = (_position != null &&
-//            _duration != null &&
-//            _position.inMilliseconds > 0 &&
-//            _position.inMilliseconds < _duration.inMilliseconds)
-//        ? _position
-//        : null;
     final result = await audioPlayerUtil.getAudioPlayer().play(url);
     eventBus.fire(
         CurrentPlayAlbumEvent(songDetails[globalCurrentIndex].getAlbumMid()));
@@ -274,6 +269,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   }
 
   void _onComplete() {
+    print("_onComplete");
     _playNext();
   }
 
