@@ -4,21 +4,27 @@
 
 ## 截图
 
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/1.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/2.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/3.jpg" /><br><br>
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/4.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/5.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/6.jpg" /><br><br>
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/7.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/8.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/9.jpg" /><br><br>
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/10.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/11.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/12.jpg" /><br><br>
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/13.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/14.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/15.jpg" /><br><br>
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/16.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/17.jpg" />
-<img width="360" height="640" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/18.jpg" /><br><br>
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/1.jpg" />
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/2.jpg" />
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/3.jpg" />
+<br><br>
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/4.jpg" />
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/5.jpg" />
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/6.jpg" />
+<br><br>
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/7.jpg" />
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/8.jpg" />
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/9.jpg" />
+<br><br>
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/10.jpg" />
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/11.jpg" />
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/12.jpg" />
+<br><br>
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/13.jpg" />
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/14.jpg" />
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/15.jpg" />
+<br><br>
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/16.jpg" />
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/17.jpg" />
+<img width="180" height="320" src="https://github.com/Anonymitys/flutter_music/blob/master/screenshots/18.jpg" />
+<br><br>
