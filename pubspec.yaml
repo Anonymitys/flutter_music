@@ -32,6 +32,8 @@ dependencies:
   shared_preferences: ^0.5.6+3
   audioplayers: ^0.14.1
   event_bus: ^1.1.1
+  video_player: ^0.10.8+1
+  chewie: ^0.9.10
 
 dev_dependencies:
   flutter_test:
