@@ -8,7 +8,7 @@ import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/util.dart';
 
 class PlayMVBody extends StatefulWidget {
-  var vid;
+  final vid;
 
   PlayMVBody(this.vid);
 
