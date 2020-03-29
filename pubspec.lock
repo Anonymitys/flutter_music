@@ -29,6 +29,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.14.1"
+  awsome_video_player:
+    dependency: "direct main"
+    description:
+      name: awsome_video_player
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.7"
   boolean_selector:
     dependency: transitive
     description:
@@ -43,13 +50,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.2"
-  chewie:
-    dependency: "direct main"
-    description:
-      name: chewie
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.9.10"
   collection:
     dependency: transitive
     description:
@@ -57,6 +57,27 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.14.11"
+  connectivity:
+    dependency: transitive
+    description:
+      name: connectivity
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.4.8+2"
+  connectivity_macos:
+    dependency: transitive
+    description:
+      name: connectivity_macos
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.0+2"
+  connectivity_platform_interface:
+    dependency: transitive
+    description:
+      name: connectivity_platform_interface
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.3"
   convert:
     dependency: transitive
     description:
@@ -170,13 +191,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.8"
-  open_iconic_flutter:
+  orientation:
     dependency: transitive
     description:
-      name: open_iconic_flutter
+      name: orientation
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.0"
+    version: "1.2.0"
   palette_generator:
     dependency: "direct main"
     description:
@@ -247,6 +268,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.5"
+  screen:
+    dependency: transitive
+    description:
+      name: screen
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.5"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -351,7 +379,7 @@ packages:
     source: hosted
     version: "2.0.8"
   video_player:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: video_player
       url: "https://pub.flutter-io.cn"
@@ -371,13 +399,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.2+1"
-  wakelock:
-    dependency: transitive
-    description:
-      name: wakelock
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.4"
   xml:
     dependency: transitive
     description:
@@ -386,5 +407,5 @@ packages:
     source: hosted
     version: "3.5.0"
 sdks:
-  dart: ">=2.7.0 <3.0.0"
-  flutter: ">=1.12.13+hotfix.8 <2.0.0"
+  dart: ">=2.5.0 <3.0.0"
+  flutter: ">=1.12.13+hotfix.5 <2.0.0"

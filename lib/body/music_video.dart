@@ -4,6 +4,7 @@ import 'package:flutter_music/base_widget.dart';
 import 'package:flutter_music/bean/mv_detail.dart';
 import 'package:flutter_music/bean/mv_list_and_tag.dart';
 import 'package:flutter_music/bean/top_mv_list.dart';
+import 'package:flutter_music/body/play_mv.dart';
 import 'package:flutter_music/body/top_mv_list_body.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/util.dart';
@@ -72,7 +73,7 @@ class _MusicVideoState extends State<MusicVideo> {
           SliverGrid(
             delegate: SliverChildBuilderDelegate(
                 (context, index) => _gridItem(index, 0, (vid) {
-                      print(vid);
+                      Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PlayMVBody(vid)));
                     }),
                 childCount: 4),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

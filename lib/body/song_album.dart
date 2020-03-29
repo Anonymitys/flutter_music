@@ -5,6 +5,7 @@ import 'package:flutter_music/bean/new_song_list.dart';
 import 'package:flutter_music/bean/singer_entity.dart';
 import 'package:flutter_music/bean/singer_list.dart';
 import 'package:flutter_music/body/album_detail.dart';
+import 'package:flutter_music/body/play_mv.dart';
 import 'package:flutter_music/data/global_variable.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/event_bus_util.dart';
@@ -121,7 +122,8 @@ class _SongAndAlbumState extends State<SongandAlbumBody> {
           child: IconButton(
               icon: Icon(Icons.video_library),
               onPressed: () {
-                print(_songList.data.songlist[index].mv.vid);
+               // print(_songList.data.songlist[index].mv.vid);
+                Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PlayMVBody(_songList.data.songlist[index].mv.vid)));
               }),
         ),
         onTap: () {

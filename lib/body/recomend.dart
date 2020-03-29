@@ -6,6 +6,7 @@ import 'package:flutter_music/app_routes.dart';
 import 'package:flutter_music/bean/cd_list.dart';
 import 'package:flutter_music/bean/song_detail.dart';
 import 'package:flutter_music/bean/tag_entity.dart';
+import 'package:flutter_music/body/play_mv.dart';
 import 'package:flutter_music/data/global_variable.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/storage/DataStorage.dart';
@@ -85,7 +86,8 @@ _playlist(BuildContext context,int index) {
             child: IconButton(
                 icon: Icon(Icons.video_library),
                 onPressed: () {
-                  print(_cdlist.songlist[index].vid);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => PlayMVBody(_cdlist.songlist[index].vid)));
                 }),
           )
         ],

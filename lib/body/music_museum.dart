@@ -6,6 +6,7 @@ import 'package:flutter_music/bean/home.dart';
 import 'package:flutter_music/bean/mv_detail.dart';
 import 'package:flutter_music/body/album_detail.dart';
 import 'package:flutter_music/body/play_list_catagory_body.dart';
+import 'package:flutter_music/body/play_mv.dart';
 import 'package:flutter_music/body/recomend.dart';
 import 'package:flutter_music/body/song_album.dart';
 import 'package:flutter_music/body/top_list_detail.dart';
@@ -165,7 +166,7 @@ class _MusicMuseumState extends State<MusicMuseum> {
                   itemBuilder: (context, index) => _mvItem(
                     index,
                     (vid) {
-                      print(vid);
+                     Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PlayMVBody(vid)));
                     },
                   ),
                   itemCount: 6,
@@ -443,7 +444,8 @@ class _MusicMuseumState extends State<MusicMuseum> {
             songDetails = _musicHome.newSongList.data.songlist;
             globalCurrentIndex = i + 5 * index;
             Navigator.of(context).pushNamed(Routes.PLAY_DETAIL);
-            eventBus.fire(CurrentPlayAlbumEvent(songDetails[globalCurrentIndex].getAlbumMid()));
+            eventBus.fire(CurrentPlayAlbumEvent(
+                songDetails[globalCurrentIndex].getAlbumMid()));
           },
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(5),
@@ -463,7 +465,14 @@ class _MusicMuseumState extends State<MusicMuseum> {
           trailing: Offstage(
             offstage: _musicHome
                 .newSongList.data.songlist[i + 5 * index].mv.vid.isEmpty,
-            child: Icon(Icons.video_library),
+            child: IconButton(
+              icon: Icon(Icons.video_library),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => PlayMVBody(_musicHome
+                        .newSongList.data.songlist[i + 5 * index].mv.vid)));
+              },
+            ),
           )),
     );
   }

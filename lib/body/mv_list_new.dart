@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music/bean/mv_detail.dart';
+import 'package:flutter_music/body/play_mv.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/util.dart';
 
@@ -82,7 +83,7 @@ class _MVListState extends State<MVListNewBody> {
   _getMainWidget(context) {
     return ListView.builder(
       itemBuilder: (context, index) => _mvItem(index, (vid){
-        print(vid);
+        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PlayMVBody(vid)));
       }),
       itemCount: _mv.data.mvlist.length,
     );

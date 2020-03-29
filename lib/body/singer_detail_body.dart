@@ -7,6 +7,7 @@ import 'package:flutter_music/bean/singer_list.dart';
 import 'package:flutter_music/bean/singer_mv.dart';
 import 'package:flutter_music/bean/singer_song.dart';
 import 'package:flutter_music/body/album_detail.dart';
+import 'package:flutter_music/body/play_mv.dart';
 import 'package:flutter_music/data/global_variable.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/event_bus_util.dart';
@@ -250,8 +251,8 @@ class _SingerDetailState extends State<SingerDetailBody> {
             child: IconButton(
                 icon: Icon(Icons.video_library),
                 onPressed: () {
-                  print(_singerSong
-                      .singerSongList.data.songList[index].songInfo.mv.vid);
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PlayMVBody(_singerSong
+                      .singerSongList.data.songList[index].songInfo.mv.vid)));
                 }),
           ),
           onTap: () {
@@ -323,7 +324,7 @@ class _SingerDetailState extends State<SingerDetailBody> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        print(_singerMV.data.list[index].vid);
+        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>PlayMVBody(_singerMV.data.list[index].vid)));
       },
       child: Container(
         child: Column(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music/bean/singer_list.dart';
 import 'package:flutter_music/bean/top_mv_list.dart';
+import 'package:flutter_music/body/play_mv.dart';
 import 'package:flutter_music/network/network_util.dart';
 import 'package:flutter_music/utils/util.dart';
 
@@ -89,7 +90,9 @@ class _TopMVList extends State<TopMVListBody> {
   _itemMvwidget(BuildContext context, int index) {
     return GestureDetector(
       onTap: () {
-        print(_topMVList.request.data.rankList[index].videoInfo.vid);
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) => PlayMVBody(
+                _topMVList.request.data.rankList[index].videoInfo.vid)));
       },
       child: Container(
         padding: EdgeInsets.all(10),

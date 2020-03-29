@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_music/app_routes.dart';
 import 'package:flutter_music/bean/album_entity.dart';
 import 'package:flutter_music/bean/singer_entity.dart';
+import 'package:flutter_music/body/play_mv.dart';
 import 'package:flutter_music/body/singer_detail_body.dart';
 import 'package:flutter_music/data/global_variable.dart';
 import 'package:flutter_music/network/network_util.dart';
@@ -27,7 +28,7 @@ class _AlbumDetailState extends State<AlbumDetailBody> {
   var _title = '专辑';
   double opacity = 0;
   bool showPlayAll = false;
-  bool isFirstClick =true;
+  bool isFirstClick = true;
 
   List<Singer> singers = List();
 
@@ -35,20 +36,20 @@ class _AlbumDetailState extends State<AlbumDetailBody> {
   void initState() {
     _futureBuilderFuture =
         HttpRequest.getAlbumDetail(widget.albumMid).then((value) {
-          _albumDetail = AlbumDetail.fromJson(value);
-          List<String> tmp = List();
+      _albumDetail = AlbumDetail.fromJson(value);
+      List<String> tmp = List();
 
-          _albumDetail.albumSonglist.albumInfo.songList.forEach((v) {
-            v.songInfo.singer.forEach((f) {
-              if (!tmp.contains(f.singerMid)) {
-                tmp.add(f.singerMid);
-                singers.add(f);
-              }
-            });
-          });
+      _albumDetail.albumSonglist.albumInfo.songList.forEach((v) {
+        v.songInfo.singer.forEach((f) {
+          if (!tmp.contains(f.singerMid)) {
+            tmp.add(f.singerMid);
+            singers.add(f);
+          }
         });
+      });
+    });
     PaletteGenerator.fromImageProvider(
-        NetworkImage(getSongPic(widget.albumMid)))
+            NetworkImage(getSongPic(widget.albumMid)))
         .then((paletteGenerator) {
       if (paletteGenerator != null && paletteGenerator.colors.isNotEmpty)
         pickColor = paletteGenerator.colors.toList()[0].withOpacity(1);
@@ -72,10 +73,7 @@ class _AlbumDetailState extends State<AlbumDetailBody> {
 
   @override
   Widget build(BuildContext context) {
-    top = MediaQuery
-        .of(context)
-        .padding
-        .top;
+    top = MediaQuery.of(context).padding.top;
     return Scaffold(
       body: FutureBuilder(
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -129,9 +127,9 @@ class _AlbumDetailState extends State<AlbumDetailBody> {
                   ),
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
-                          (context, index) => _playlist(index),
+                      (context, index) => _playlist(index),
                       childCount:
-                      _albumDetail.albumSonglist.albumInfo.songList.length,
+                          _albumDetail.albumSonglist.albumInfo.songList.length,
                     ),
                   ),
                 ],
@@ -203,17 +201,17 @@ class _AlbumDetailState extends State<AlbumDetailBody> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        if(isFirstClick){
+        if (isFirstClick) {
           isFirstClick = false;
           songDetails.clear();
-          _albumDetail.albumSonglist.albumInfo.songList.forEach((v){
+          _albumDetail.albumSonglist.albumInfo.songList.forEach((v) {
             songDetails.add(v.songInfo);
           });
         }
         globalCurrentIndex = index;
-        eventBus.fire(CurrentPlayAlbumEvent(_albumDetail.albumSonglist.albumInfo.albumMid));
+        eventBus.fire(CurrentPlayAlbumEvent(
+            _albumDetail.albumSonglist.albumInfo.albumMid));
         Navigator.of(context).pushNamed(Routes.PLAY_DETAIL);
-
       },
       child: Container(
         margin: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
@@ -248,8 +246,11 @@ class _AlbumDetailState extends State<AlbumDetailBody> {
               child: IconButton(
                   icon: Icon(Icons.video_library),
                   onPressed: () {
-                    print(_albumDetail.albumSonglist.albumInfo.songList[index]
-                        .songInfo.mv.vid);
+//                    print(_albumDetail.albumSonglist.albumInfo.songList[index]
+//                        .songInfo.mv.vid);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => PlayMVBody(_albumDetail.albumSonglist
+                            .albumInfo.songList[index].songInfo.mv.vid)));
                   }),
             )
           ],
@@ -258,8 +259,7 @@ class _AlbumDetailState extends State<AlbumDetailBody> {
     );
   }
 
-  Widget _playlistHeader(BuildContext context) =>
-      Stack(
+  Widget _playlistHeader(BuildContext context) => Stack(
         children: <Widget>[
           Container(
             color: pickColor,
@@ -323,9 +323,8 @@ class _AlbumDetailState extends State<AlbumDetailBody> {
         onTap: () {
           if (singers.length == 1) {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) =>
-                    SingerDetailBody(
-                        singers[0].singerMid, singers[0].singerName)));
+                builder: (_) => SingerDetailBody(
+                    singers[0].singerMid, singers[0].singerName)));
           } else {
             showModalBottomSheet(
                 context: context,
@@ -337,26 +336,24 @@ class _AlbumDetailState extends State<AlbumDetailBody> {
                         mainAxisSize: MainAxisSize.min,
                         children: singers
                             .map(
-                              (v) =>
-                              ListTile(
+                              (v) => ListTile(
                                 leading: Container(
                                   width: 30,
                                   height: 30,
                                   child: CircleAvatar(
                                     backgroundImage:
-                                    NetworkImage(getSingerPic(v.singerMid)),
+                                        NetworkImage(getSingerPic(v.singerMid)),
                                   ),
                                 ),
                                 title: Text(v.singerName),
                                 onTap: () {
                                   Navigator.pop(context);
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) =>
-                                          SingerDetailBody(
-                                              v.singerMid, v.singerName)));
+                                      builder: (_) => SingerDetailBody(
+                                          v.singerMid, v.singerName)));
                                 },
                               ),
-                        )
+                            )
                             .toList(),
                       ),
                     ),

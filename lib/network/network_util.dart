@@ -265,6 +265,43 @@ class HttpRequest {
     );
     return json.decode(response.data.toString())['req_0']['data']['midurlinfo'][0]['purl'];
   }
+
+  static Future<dynamic> getMvUrl(String vid) async {
+    var response = await dio.post(
+      API.BASE_URL,
+      data: Body.getmvUrl(vid),
+      options: Options(responseType: ResponseType.plain),
+    );
+    return json.decode(response.data.toString())["getMvUrl"]["data"][vid]["mp4"];
+  }
+
+  static Future<dynamic> getMvInfo(String vid) async{
+    var response = await dio.post(
+      API.BASE_URL,
+      data: Body.getplaymvInfo(vid),
+      options: Options(responseType: ResponseType.plain),
+    );
+    return json.decode(response.data.toString());
+  }
+
+  static Future<dynamic> getplayMvInfo(String vid) async {
+    var responses = await Future.wait([
+      dio.post(API.BASE_URL,
+          data: Body.getmvUrl(vid),
+          options: Options(responseType: ResponseType.plain)),
+      dio.post(API.BASE_URL,
+          data: Body.getplaymvInfo(vid),
+          options: Options(responseType: ResponseType.plain)),
+
+    ]);
+    List list = List();
+    list.add(json.decode(responses[0].data.toString())["getMvUrl"]["data"][vid]["mp4"]);
+    list.add(json.decode(responses[1].data.toString())["mvinfo"]["data"][vid]);
+    list.add(json.decode(responses[1].data.toString())["other"]["data"]["list"]);
+
+    return list;
+  }
+  
 }
 
 class API {
@@ -435,4 +472,36 @@ class Body {
           }
         }
       };
+  
+  static getmvUrl(String vid)=>{
+    "getMvUrl": {
+      "module": "gosrf.Stream.MvUrlProxy",
+      "method": "GetMvUrls",
+      "param": {
+        "vids": [vid],
+        "request_typet": 10001,
+        "addrtype": 3
+      }
+    }
+  };
+
+  static getplaymvInfo(String vid)=>{
+    "mvinfo": {
+      "module": "video.VideoDataServer",
+      "method": "get_video_info_batch",
+      "param": {
+        "vidlist": [vid],
+        "required": ["vid",  "cover_pic", "singers",  "msg", "name", "desc", "playcnt", "pubdate"]
+      }
+    },
+    "other": {
+      "module": "video.VideoLogicServer",
+      "method": "rec_video_byvid",
+      "param": {
+        "vid": vid,
+        "required": ["vid",   "cover_pic", "singers", "msg", "name", "desc", "playcnt", "pubdate",   "uploader_headurl", "uploader_nick"],
+        "support": 1
+      }
+    }
+  };
 }

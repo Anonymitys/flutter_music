@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music/app_routes.dart';
 import 'package:flutter_music/bean/toplist_detail.dart';
+import 'package:flutter_music/body/play_mv.dart';
 import 'package:flutter_music/data/global_variable.dart';
 import 'package:flutter_music/utils/event_bus_util.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -120,10 +121,11 @@ class _TopListDetailstate extends State<TopListDetailPage> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-       // callback(_topListDetail.detail.data.songInfoList[index].mid);
-        songDetails =  _topListDetail.detail.data.songInfoList;
+        // callback(_topListDetail.detail.data.songInfoList[index].mid);
+        songDetails = _topListDetail.detail.data.songInfoList;
         globalCurrentIndex = index;
-        eventBus.fire(CurrentPlayAlbumEvent(songDetails[globalCurrentIndex].getAlbumMid()));
+        eventBus.fire(CurrentPlayAlbumEvent(
+            songDetails[globalCurrentIndex].getAlbumMid()));
         Navigator.of(context).pushNamed(Routes.PLAY_DETAIL);
       },
       child: Container(
@@ -164,7 +166,9 @@ class _TopListDetailstate extends State<TopListDetailPage> {
               child: IconButton(
                 icon: Icon(Icons.video_library),
                 onPressed: () {
-                  print(_topListDetail.detail.data.songInfoList[index].mv.vid);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => PlayMVBody(_topListDetail
+                          .detail.data.songInfoList[index].mv.vid)));
                 },
               ),
             ),
