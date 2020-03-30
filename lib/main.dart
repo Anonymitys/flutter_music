@@ -6,6 +6,7 @@ import 'package:flutter_music/body/music_museum.dart';
 import 'package:flutter_music/body/music_video.dart';
 import 'package:flutter_music/body/play_detail_home.dart';
 import 'package:flutter_music/instance/audio_player.dart';
+import 'package:flutter_music/body/radio_list_body.dart';
 import 'package:flutter_music/utils/event_bus_util.dart';
 import 'package:flutter_music/utils/util.dart';
 
@@ -47,9 +48,10 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         return MusicVideo();
         break;
-      case 2:
-        break;
       case 3:
+        return RadioListBody();
+        break;
+      case 4:
         break;
     }
   }

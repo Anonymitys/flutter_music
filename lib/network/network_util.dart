@@ -301,7 +301,16 @@ class HttpRequest {
 
     return list;
   }
-  
+
+
+  static Future<dynamic> getRadioList() async{
+    var response = await dio.get(API.RADIO_LIST,options: Options(responseType: ResponseType.plain));
+    var responseStr = response.data.toString();
+    int start = responseStr.indexOf("(");
+    int last = responseStr.lastIndexOf(")");
+    String b = responseStr.substring(start + 1, last);
+    return json.decode(b)['data']['data'];
+  }
 }
 
 class API {
@@ -317,6 +326,8 @@ class API {
 
   static const PLAY_LIST =
       "https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg";
+
+  static const RADIO_LIST = "https://c.y.qq.com/v8/fcg-bin/fcg_v8_radiolist.fcg";
 }
 
 class Body {
@@ -472,7 +483,7 @@ class Body {
           }
         }
       };
-  
+
   static getmvUrl(String vid)=>{
     "getMvUrl": {
       "module": "gosrf.Stream.MvUrlProxy",
